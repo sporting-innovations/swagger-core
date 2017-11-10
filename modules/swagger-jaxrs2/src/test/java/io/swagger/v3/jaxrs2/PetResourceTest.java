@@ -17,7 +17,7 @@ public class PetResourceTest {
     private static final String OPEN_API_VERSION = "3.0.0";
 
     @Test(description = "Test an empty resource class (Without operations or annotations)")
-    public void testSimpleReadClass() {
+    public void testEmptyPetResource() {
         Reader reader = new Reader(new OpenAPI());
         OpenAPI openAPI = reader.read(EmptyPetResource.class);
         assertNotNull(openAPI);
