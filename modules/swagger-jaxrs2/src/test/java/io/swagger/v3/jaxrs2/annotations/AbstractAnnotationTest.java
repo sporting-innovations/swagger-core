@@ -8,6 +8,9 @@ import io.swagger.v3.jaxrs2.matchers.SerializationMatchers;
 import io.swagger.v3.oas.models.OpenAPI;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public abstract class AbstractAnnotationTest {
     public String readIntoYaml(Class<?> cls) {
@@ -25,9 +28,21 @@ public abstract class AbstractAnnotationTest {
         }
     }
 
-    public void compareAsYaml(Class<?> cls, String yaml) throws IOException {
+    protected void compareAsYaml(Class<?> cls, String yaml) throws IOException {
         Reader reader = new Reader(new OpenAPI());
         OpenAPI openAPI = reader.read(cls);
         SerializationMatchers.assertEqualsToYaml(openAPI, yaml);
+    }
+
+    protected String getOpenAPIasYAML(final String file) {
+        try {
+            String swaggerAsString = new String(Files.readAllBytes
+                    (Paths.get(getClass().getClassLoader().getResource(file).toURI())));
+            return swaggerAsString;
+        } catch (IOException e) {
+            return "";
+        } catch (URISyntaxException e) {
+            return "";
+        }
     }
 }
