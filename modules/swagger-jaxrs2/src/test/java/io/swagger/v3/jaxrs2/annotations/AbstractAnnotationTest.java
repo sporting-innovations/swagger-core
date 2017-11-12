@@ -34,7 +34,7 @@ public abstract class AbstractAnnotationTest {
         SerializationMatchers.assertEqualsToYaml(openAPI, yaml);
     }
 
-    protected String getOpenAPIasYAML(final String file) {
+    protected String getOpenAPIasString(final String file) {
         try {
             String swaggerAsString = new String(Files.readAllBytes
                     (Paths.get(getClass().getClassLoader().getResource(file).toURI())));

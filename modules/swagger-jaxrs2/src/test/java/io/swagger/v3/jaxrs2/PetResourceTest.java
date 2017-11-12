@@ -22,6 +22,6 @@ public class PetResourceTest extends AbstractAnnotationTest {
         Reader reader = new Reader(new OpenAPI());
         OpenAPI openAPI = reader.read(EmptyPetResource.class);
         assertNotNull(openAPI);
-        assertEquals(readIntoYaml(openAPI.getClass()), getOpenAPIasYAML(EMPTY_PET_RESOURCE));
+        assertEquals(readIntoYaml(openAPI.getClass()), getOpenAPIasString(EMPTY_PET_RESOURCE));
     }
 }
