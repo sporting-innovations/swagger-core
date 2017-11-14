@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
-
 @SecurityScheme(name = "myOauth2Security",
         type = SecuritySchemeType.OAUTH2,
         in = SecuritySchemeIn.HEADER,
@@ -22,6 +21,12 @@ import javax.ws.rs.Path;
                         name = "write:pets",
                         description = "modify pets in your account"))
         )
+)
+@SecurityRequirement(name = "security_key",
+        scopes = {"write:pets", "read:pets"}
+)
+@SecurityRequirement(name = "myOauth2Security",
+        scopes = {"write:pets"}
 )
 public class SecurityResource {
 
@@ -33,5 +38,15 @@ public class SecurityResource {
             scopes = {"write:pets", "read:pets"}
     )
     public void getSecurity() {
+    }
+
+    @GET
+    @Path("/2")
+    @Operation(operationId = "Operation Id 2",
+            description = "description 2")
+    @SecurityRequirement(name = "security_key2",
+            scopes = {"write:pets", "read:pets"}
+    )
+    public void getSecurity2() {
     }
 }

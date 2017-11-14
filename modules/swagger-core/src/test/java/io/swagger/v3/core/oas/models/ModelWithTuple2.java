@@ -49,7 +49,7 @@ public class ModelWithTuple2 {
                 final String name = "MapOf" + WordUtils.capitalize(_typeName(left));
 
                 return new MapSchema()
-                        .title(name)
+                        .name(name)
                         .additionalProperties(context.resolve(left, new Annotation[]{}));
             }
             return super.resolve(type, context, chain);
@@ -64,14 +64,15 @@ public class ModelWithTuple2 {
 
         @Override
         public Schema resolve(Type type, ModelConverterContext context, Annotation[] annotations,
-                                        Iterator<ModelConverter> chain) {
+                              Iterator<ModelConverter> chain) {
             final JavaType javaType = _mapper.constructType(type);
             if (Pair.class.isAssignableFrom(javaType.getRawClass())) {
                 final JavaType left = javaType.containedType(0);
                 return new MapSchema().additionalProperties(context.resolve(left, new Annotation[]{}));
             }
-            if(chain.hasNext())
+            if (chain.hasNext()) {
                 return chain.next().resolve(type, context, annotations, chain);
+            }
             return null;
         }
 

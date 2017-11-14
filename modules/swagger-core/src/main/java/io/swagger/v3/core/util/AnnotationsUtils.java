@@ -1,5 +1,6 @@
 package io.swagger.v3.core.util;
 
+import com.fasterxml.jackson.databind.introspect.Annotated;
 import io.swagger.v3.oas.annotations.links.LinkParameter;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.models.ExternalDocumentation;
@@ -235,44 +236,30 @@ public abstract class AnnotationsUtils {
         return Optional.of(schemaObject);
     }
 
-    public static Optional<Set<Tag>> getTags(String[] tags) {
+    public static Optional<Set<Tag>> getTags(io.swagger.v3.oas.annotations.tags.Tag[] tags, boolean skipOnlyName) {
         if (tags == null) {
             return Optional.empty();
         }
         Set<Tag> tagsList = new LinkedHashSet<>();
-        boolean isEmpty = true;
-        for (String tag : tags) {
-            Tag tagObject = new Tag();
-            if (StringUtils.isNotBlank(tag)) {
-                isEmpty = false;
-            }
-            tagObject.setDescription(tag);
-            tagObject.setName(tag);
-            tagsList.add(tagObject);
-        }
-        if (isEmpty) {
-            return Optional.empty();
-        }
-        return Optional.of(tagsList);
-    }
-
-    public static Optional<Set<Tag>> getTags(io.swagger.v3.oas.annotations.tags.Tag[] tags) {
-        if (tags == null) {
-            return Optional.empty();
-        }
-        Set<Tag> tagsList = new LinkedHashSet<>();
-        boolean isEmpty = true;
         for (io.swagger.v3.oas.annotations.tags.Tag tag : tags) {
-            Tag tagObject = new Tag();
-            if (StringUtils.isNotBlank(tag.name())) {
-                isEmpty = false;
+            if (StringUtils.isBlank(tag.name())) {
+                continue;
             }
-            tagObject.setDescription(tag.description());
+            if (skipOnlyName &&
+                    StringUtils.isBlank(tag.description()) &&
+                    StringUtils.isBlank(tag.externalDocs().description()) &&
+                    StringUtils.isBlank(tag.externalDocs().url())) {
+                continue;
+            }
+            Tag tagObject = new Tag();
+            if (StringUtils.isNotBlank(tag.description())) {
+                tagObject.setDescription(tag.description());
+            }
             tagObject.setName(tag.name());
             getExternalDocumentation(tag.externalDocs()).ifPresent(tagObject::setExternalDocs);
             tagsList.add(tagObject);
         }
-        if (isEmpty) {
+        if (tagsList.isEmpty()) {
             return Optional.empty();
         }
         return Optional.of(tagsList);
@@ -317,6 +304,13 @@ public abstract class AnnotationsUtils {
             if (StringUtils.isNotBlank(serverVariable.description())) {
                 serverVariableObject.setDescription(serverVariable.description());
             }
+            if (StringUtils.isNotBlank(serverVariable.defaultValue())) {
+                serverVariableObject.setDefault(serverVariable.defaultValue());
+            }
+            if (serverVariable.allowableValues() != null && serverVariable.allowableValues().length > 0) {
+                serverVariableObject.setEnum(Arrays.asList(serverVariable.allowableValues()));
+            }
+            // TODO extensions
             serverVariablesObject.addServerVariable(serverVariable.name(), serverVariableObject);
         }
         serverObject.setVariables(serverVariablesObject);
@@ -343,6 +337,7 @@ public abstract class AnnotationsUtils {
         }
         return Optional.of(external);
     }
+
     public static Optional<Info> getInfo(io.swagger.v3.oas.annotations.info.Info info) {
         if (info == null) {
             return Optional.empty();
@@ -637,5 +632,31 @@ public abstract class AnnotationsUtils {
             content.addMediaType(ParameterProcessor.MEDIA_TYPE, mediaType);
         }
 
+    }
+
+    public static io.swagger.v3.oas.annotations.media.Schema getSchemaAnnotation(Annotated a) {
+        if (a == null) {
+            return null;
+        }
+        io.swagger.v3.oas.annotations.media.ArraySchema arraySchema = a.getAnnotation(io.swagger.v3.oas.annotations.media.ArraySchema.class);
+        if (arraySchema != null) {
+            return arraySchema.schema();
+        } else {
+            return a.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+        }
+    }
+
+    public static io.swagger.v3.oas.annotations.media.Schema getSchemaAnnotation(Class<?> cls) {
+        if (cls == null) {
+            return null;
+        }
+        io.swagger.v3.oas.annotations.media.Schema mp = null;
+        io.swagger.v3.oas.annotations.media.ArraySchema as = cls.getAnnotation(io.swagger.v3.oas.annotations.media.ArraySchema.class);
+        if (as != null) {
+            mp = as.schema();
+        } else {
+            mp = cls.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+        }
+        return mp;
     }
 }

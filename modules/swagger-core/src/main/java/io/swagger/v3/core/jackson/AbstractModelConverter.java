@@ -55,7 +55,7 @@ public abstract class AbstractModelConverter implements ModelConverter {
     @Override
     public Schema resolveAnnotatedType(Type type, Annotated member, String elementName, ModelConverterContext context, Iterator<ModelConverter> chain) {
         if (chain.hasNext()) {
-            return chain.next().resolveAnnotatedType(type, member, elementName,context, chain);
+            return chain.next().resolveAnnotatedType(type, member, elementName, context, chain);
         } else {
             return null;
         }
@@ -116,7 +116,6 @@ public abstract class AbstractModelConverter implements ModelConverter {
     }
 
     protected String _subTypeName(NamedType type) {
-        // !!! TODO: should this use 'name' instead?
         return type.getType().getName();
     }
 

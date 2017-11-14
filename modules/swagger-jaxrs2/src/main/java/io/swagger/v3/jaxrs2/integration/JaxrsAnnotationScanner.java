@@ -1,6 +1,7 @@
 package io.swagger.v3.jaxrs2.integration;
 
 import io.swagger.v3.jaxrs2.integration.api.JaxrsOpenApiScanner;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.integration.IgnoredPackages;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.integration.api.OpenAPIConfiguration;
@@ -32,7 +33,7 @@ public class JaxrsAnnotationScanner<T extends JaxrsAnnotationScanner<T>> impleme
     protected Application application;
     protected static Logger LOGGER = LoggerFactory.getLogger(JaxrsAnnotationScanner.class);
 
-    public JaxrsAnnotationScanner application (Application application) {
+    public JaxrsAnnotationScanner application(Application application) {
         this.application = application;
         return this;
     }
@@ -42,11 +43,9 @@ public class JaxrsAnnotationScanner<T extends JaxrsAnnotationScanner<T>> impleme
         this.application = application;
     }
 
-
-
-    public T openApiConfiguration (OpenAPIConfiguration openApiConfiguration) {
+    public T openApiConfiguration(OpenAPIConfiguration openApiConfiguration) {
         this.openApiConfiguration = openApiConfiguration;
-        return (T)this;
+        return (T) this;
     }
 
     @Override
@@ -94,8 +93,7 @@ public class JaxrsAnnotationScanner<T extends JaxrsAnnotationScanner<T>> impleme
         final Reflections reflections;
         reflections = new Reflections(config);
         Set<Class<?>> classes = reflections.getTypesAnnotatedWith(javax.ws.rs.Path.class);
-        // TODO add if adding annotations
-        //classes.addAll(reflections.getTypesAnnotatedWith(OpenApiDefinition.class));
+        classes.addAll(reflections.getTypesAnnotatedWith(OpenAPIDefinition.class));
 
         for (Class<?> cls : classes) {
             if (allowAllPackages) {
@@ -108,7 +106,7 @@ public class JaxrsAnnotationScanner<T extends JaxrsAnnotationScanner<T>> impleme
                 }
             }
         }
-        LOGGER.trace ("classes() - output size {}", output.size());
+        LOGGER.trace("classes() - output size {}", output.size());
         return output;
     }
 
