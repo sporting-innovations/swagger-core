@@ -37,15 +37,15 @@ public abstract class AbstractAnnotationTest {
     public void compareAsYaml(String actualYaml, String expectedYaml) throws IOException {
         SerializationMatchers.assertEqualsToYaml(Yaml.mapper().readValue(actualYaml, OpenAPI.class), expectedYaml);
     }
+
     public void compareAsJson(String actualJson, String expectedJson) throws IOException {
         SerializationMatchers.assertEqualsToJson(Yaml.mapper().readValue(actualJson, OpenAPI.class), expectedJson);
     }
 
     protected String getOpenAPIasString(final String file) {
         try {
-            String swaggerAsString = new String(Files.readAllBytes
+            return new String(Files.readAllBytes
                     (Paths.get(getClass().getClassLoader().getResource(file).toURI())));
-            return swaggerAsString;
         } catch (IOException e) {
             return "";
         } catch (URISyntaxException e) {
