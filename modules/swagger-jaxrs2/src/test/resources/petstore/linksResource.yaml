@@ -2,7 +2,7 @@ openapi: 3.0.0
 paths:
   /users:
     get:
-      operationId: getUser_1
+      operationId: getUserWithAddress
       parameters:
       - name: userId
         in: query
@@ -14,8 +14,12 @@ paths:
           content:
             '*/*':
               schema:
-                type: string
+                $ref: '#/components/schemas/User'
           links:
+            address:
+              operationId: getAddress
+              parameters:
+                userId: $request.query.userId
             user:
               operationId: getUser
               parameters:

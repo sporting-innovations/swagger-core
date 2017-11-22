@@ -17,7 +17,7 @@ import javax.ws.rs.QueryParam;
  */
 public class LinksResource {
     @Path("/users")
-    @Operation(operationId = "getUser",
+    @Operation(operationId = "getUserWithAddress",
             responses = {
                     @ApiResponse(description = "test description",
                             content = @Content(mediaType = "*/*", schema = @Schema(ref = "#/components/schemas/User")),
@@ -27,19 +27,7 @@ public class LinksResource {
                                             operationId = "getAddress",
                                             parameters = @LinkParameter(
                                                     name = "userId",
-                                                    expression = "$request.query.userId"))
-                            })}
-    )
-    @GET
-    public String getUser(@QueryParam("userId") String userId) {
-        return null;
-    }
-
-    @Path("/users")
-    @Operation(operationId = "getUser",
-            responses = {
-                    @ApiResponse(description = "test description",
-                            links = {
+                                                    expression = "$request.query.userId")),
                                     @Link(
                                             name = "user",
                                             operationId = "getUser",
@@ -50,7 +38,7 @@ public class LinksResource {
                             })}
     )
     @GET
-    public String getUsers(@QueryParam("userId") String userId) {
+    public String getUser(@QueryParam("userId") String userId) {
         return null;
     }
 
