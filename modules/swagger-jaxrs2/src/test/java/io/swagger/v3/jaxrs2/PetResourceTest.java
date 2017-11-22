@@ -7,6 +7,7 @@ import io.swagger.v3.jaxrs2.resources.petstore.callback.MultipleCallbacksTestWit
 import io.swagger.v3.jaxrs2.resources.petstore.callback.RepeatableCallbackResource;
 import io.swagger.v3.jaxrs2.resources.petstore.example.ExamplesResource;
 import io.swagger.v3.jaxrs2.resources.petstore.link.LinksResource;
+import io.swagger.v3.jaxrs2.resources.petstore.operations.OperationsResource;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
@@ -23,6 +24,7 @@ public class PetResourceTest extends AbstractAnnotationTest {
     private static final String SIMPLE_CALLBACK_RESOURCE = "petstore/simpleCallbackResource.yaml";
     private static final String MULTIPLE_CALLBACK_RESOURCE = "petstore/multipleCallbacksTestWithOperationResource.yaml";
     private static final String REPEATABLE_CALLBACK_RESOURCE = "petstore/repeatableCallbackResource.yaml";
+    private static final String OPERATIONS_RESOURCE = "petstore/operationsResource.yaml";
 
     @Test(description = "Test an empty resource class (Without operations or annotations)")
     public void testEmptyPetResource() {
@@ -40,12 +42,18 @@ public class PetResourceTest extends AbstractAnnotationTest {
     }
 
     @Test(description = "Test some resources with Callbacks)")
-    public void testCallBacksResource() {
+    public void testCallBacksResources() {
         assertEquals(readIntoYaml(SimpleCallbackResource.class),
                 getOpenAPIasString(SIMPLE_CALLBACK_RESOURCE));
         assertEquals(readIntoYaml(MultipleCallbacksTestWithOperationResource.class),
                 getOpenAPIasString(MULTIPLE_CALLBACK_RESOURCE));
         assertEquals(readIntoYaml(RepeatableCallbackResource.class),
                 getOpenAPIasString(REPEATABLE_CALLBACK_RESOURCE));
+    }
+
+    @Test(description = "Test some resources with different Operations scenarios)")
+    public void testOperationsResources() {
+        assertEquals(readIntoYaml(OperationsResource.class),
+                getOpenAPIasString(OPERATIONS_RESOURCE));
     }
 }
