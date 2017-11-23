@@ -5,6 +5,7 @@ import io.swagger.v3.jaxrs2.resources.SimpleCallbackResource;
 import io.swagger.v3.jaxrs2.resources.petstore.EmptyPetResource;
 import io.swagger.v3.jaxrs2.resources.petstore.callback.MultipleCallbacksTestWithOperationResource;
 import io.swagger.v3.jaxrs2.resources.petstore.callback.RepeatableCallbackResource;
+import io.swagger.v3.jaxrs2.resources.petstore.definition.OpenAPIDefinitionResource;
 import io.swagger.v3.jaxrs2.resources.petstore.example.ExamplesResource;
 import io.swagger.v3.jaxrs2.resources.petstore.link.LinksResource;
 import io.swagger.v3.jaxrs2.resources.petstore.operations.OperationsResource;
@@ -25,6 +26,7 @@ public class PetResourceTest extends AbstractAnnotationTest {
     private static final String MULTIPLE_CALLBACK_RESOURCE = "petstore/multipleCallbacksTestWithOperationResource.yaml";
     private static final String REPEATABLE_CALLBACK_RESOURCE = "petstore/repeatableCallbackResource.yaml";
     private static final String OPERATIONS_RESOURCE = "petstore/operationsResource.yaml";
+    private static final String OPEN_API_DEFINITION_RESOURCE = "petstore/openAPIDefinitionResource.yaml";
 
     @Test(description = "Test an empty resource class (Without operations or annotations)")
     public void testEmptyPetResource() {
@@ -55,5 +57,11 @@ public class PetResourceTest extends AbstractAnnotationTest {
     public void testOperationsResources() {
         assertEquals(readIntoYaml(OperationsResource.class),
                 getOpenAPIasString(OPERATIONS_RESOURCE));
+    }
+
+    @Test(description = "Test OpenAPIDefinition resource)")
+    public void testOpenAPIDefinitionResource() {
+        assertEquals(readIntoYaml(OpenAPIDefinitionResource.class),
+                getOpenAPIasString(OPEN_API_DEFINITION_RESOURCE));
     }
 }
