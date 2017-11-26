@@ -8,7 +8,15 @@ import io.swagger.v3.jaxrs2.resources.petstore.callback.RepeatableCallbackResour
 import io.swagger.v3.jaxrs2.resources.petstore.definition.OpenAPIDefinitionResource;
 import io.swagger.v3.jaxrs2.resources.petstore.example.ExamplesResource;
 import io.swagger.v3.jaxrs2.resources.petstore.link.LinksResource;
+import io.swagger.v3.jaxrs2.resources.petstore.operations.DefaultOperationResource;
+import io.swagger.v3.jaxrs2.resources.petstore.operations.HiddenOperationResource;
 import io.swagger.v3.jaxrs2.resources.petstore.operations.OperationsResource;
+import io.swagger.v3.jaxrs2.resources.petstore.security.SecurityResource;
+import io.swagger.v3.jaxrs2.resources.petstore.tags.CompleteTagResource;
+import io.swagger.v3.jaxrs2.resources.petstore.tags.TagClassResource;
+import io.swagger.v3.jaxrs2.resources.petstore.tags.TagMethodResource;
+import io.swagger.v3.jaxrs2.resources.petstore.tags.TagOpenAPIDefinitionResource;
+import io.swagger.v3.jaxrs2.resources.petstore.tags.TagOperationResource;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
@@ -19,49 +27,63 @@ import static org.testng.Assert.assertEquals;
  * Created by rafaellopez on 11/9/17.
  */
 public class PetResourceTest extends AbstractAnnotationTest {
-    private static final String EMPTY_PET_RESOURCE = "petstore/emptyPetResource.yaml";
-    private static final String EXAMPLES_RESOURCE = "petstore/examplesResource.yaml";
-    private static final String LINKS_RESOURCE = "petstore/linksResource.yaml";
-    private static final String SIMPLE_CALLBACK_RESOURCE = "petstore/simpleCallbackResource.yaml";
-    private static final String MULTIPLE_CALLBACK_RESOURCE = "petstore/multipleCallbacksTestWithOperationResource.yaml";
-    private static final String REPEATABLE_CALLBACK_RESOURCE = "petstore/repeatableCallbackResource.yaml";
-    private static final String OPERATIONS_RESOURCE = "petstore/operationsResource.yaml";
-    private static final String OPEN_API_DEFINITION_RESOURCE = "petstore/openAPIDefinitionResource.yaml";
+    private static final String PETSTORE_SOURCE = "petstore/";
+    private static final String TAGS_SOURCE = "petstore/tags/";
+    private static final String OPERATIONS_SOURCE = "petstore/operations/";
+    private static final String CALLBACKS_SOURCE = "petstore/callbacks/";
+    private static final String YAML_EXTENSION = ".yaml";
 
     @Test(description = "Test an empty resource class (Without operations or annotations)")
     public void testEmptyPetResource() {
-        assertEquals(readIntoYaml(EmptyPetResource.class), getOpenAPIasString(EMPTY_PET_RESOURCE));
+        compare(EmptyPetResource.class, PETSTORE_SOURCE);
     }
 
     @Test(description = "Test a resource with examples)")
     public void testExamplesResource() {
-        assertEquals(readIntoYaml(ExamplesResource.class), getOpenAPIasString(EXAMPLES_RESOURCE));
+        compare(ExamplesResource.class, PETSTORE_SOURCE);
     }
 
     @Test(description = "Test a resource with Links)")
     public void testLinksResource() {
-        assertEquals(readIntoYaml(LinksResource.class), getOpenAPIasString(LINKS_RESOURCE));
+        compare(LinksResource.class, PETSTORE_SOURCE);
     }
 
     @Test(description = "Test some resources with Callbacks)")
     public void testCallBacksResources() {
-        assertEquals(readIntoYaml(SimpleCallbackResource.class),
-                getOpenAPIasString(SIMPLE_CALLBACK_RESOURCE));
-        assertEquals(readIntoYaml(MultipleCallbacksTestWithOperationResource.class),
-                getOpenAPIasString(MULTIPLE_CALLBACK_RESOURCE));
-        assertEquals(readIntoYaml(RepeatableCallbackResource.class),
-                getOpenAPIasString(REPEATABLE_CALLBACK_RESOURCE));
+        compare(SimpleCallbackResource.class, CALLBACKS_SOURCE);
+        compare(MultipleCallbacksTestWithOperationResource.class, CALLBACKS_SOURCE);
+        compare(RepeatableCallbackResource.class, CALLBACKS_SOURCE);
     }
 
     @Test(description = "Test some resources with different Operations scenarios)")
     public void testOperationsResources() {
-        assertEquals(readIntoYaml(OperationsResource.class),
-                getOpenAPIasString(OPERATIONS_RESOURCE));
+        compare(HiddenOperationResource.class, OPERATIONS_SOURCE);
+        compare(DefaultOperationResource.class, OPERATIONS_SOURCE);
+        compare(OperationsResource.class, OPERATIONS_SOURCE);
     }
 
     @Test(description = "Test OpenAPIDefinition resource)")
     public void testOpenAPIDefinitionResource() {
-        assertEquals(readIntoYaml(OpenAPIDefinitionResource.class),
-                getOpenAPIasString(OPEN_API_DEFINITION_RESOURCE));
+        compare(OpenAPIDefinitionResource.class, PETSTORE_SOURCE);
+    }
+
+    @Test(description = "Test Security resource)")
+    public void testSecurityResource() {
+        compare(SecurityResource.class, PETSTORE_SOURCE);
+    }
+
+    @Test(description = "Test Tags resource)")
+    public void testTagsResource() {
+        compare(CompleteTagResource.class, TAGS_SOURCE);
+        compare(TagOpenAPIDefinitionResource.class, TAGS_SOURCE);
+        compare(TagClassResource.class, TAGS_SOURCE);
+        compare(TagMethodResource.class, TAGS_SOURCE);
+        compare(TagOperationResource.class, TAGS_SOURCE);
+    }
+
+    private void compare(final Class clazz, final String source) {
+        final String file = source + clazz.getSimpleName() + YAML_EXTENSION;
+        assertEquals(readIntoYaml(clazz),
+                getOpenAPIasString(file));
     }
 }
