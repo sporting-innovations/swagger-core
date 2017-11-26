@@ -1,4 +1,4 @@
-package io.swagger.v3.jaxrs2.resources.petstore.tags;
+package io.swagger.v3.jaxrs2.petstore.tags;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;

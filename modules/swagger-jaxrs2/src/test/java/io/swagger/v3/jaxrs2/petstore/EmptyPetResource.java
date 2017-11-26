@@ -1,4 +1,4 @@
-package io.swagger.v3.jaxrs2.resources.petstore;
+package io.swagger.v3.jaxrs2.petstore;
 
 /**
  * An Empty PetResource Class

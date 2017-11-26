@@ -1,4 +1,4 @@
-package io.swagger.v3.jaxrs2.resources.petstore.callback;
+package io.swagger.v3.jaxrs2.petstore.callback;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.callbacks.Callback;

@@ -1,4 +1,4 @@
-package io.swagger.v3.jaxrs2.resources.petstore.example;
+package io.swagger.v3.jaxrs2.petstore.example;
 
 import io.swagger.v3.jaxrs2.resources.model.User;
 import io.swagger.v3.oas.annotations.Operation;

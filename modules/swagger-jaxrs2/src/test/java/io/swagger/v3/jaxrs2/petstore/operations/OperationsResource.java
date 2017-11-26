@@ -1,4 +1,4 @@
-package io.swagger.v3.jaxrs2.resources.petstore.operations;
+package io.swagger.v3.jaxrs2.petstore.operations;
 
 import io.swagger.v3.jaxrs2.resources.exception.NotFoundException;
 import io.swagger.v3.jaxrs2.resources.model.Pet;

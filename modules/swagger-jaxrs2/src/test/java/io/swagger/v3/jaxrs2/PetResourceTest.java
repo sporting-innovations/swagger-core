@@ -2,21 +2,22 @@ package io.swagger.v3.jaxrs2;
 
 import io.swagger.v3.jaxrs2.annotations.AbstractAnnotationTest;
 import io.swagger.v3.jaxrs2.resources.SimpleCallbackResource;
-import io.swagger.v3.jaxrs2.resources.petstore.EmptyPetResource;
-import io.swagger.v3.jaxrs2.resources.petstore.callback.MultipleCallbacksTestWithOperationResource;
-import io.swagger.v3.jaxrs2.resources.petstore.callback.RepeatableCallbackResource;
-import io.swagger.v3.jaxrs2.resources.petstore.definition.OpenAPIDefinitionResource;
-import io.swagger.v3.jaxrs2.resources.petstore.example.ExamplesResource;
-import io.swagger.v3.jaxrs2.resources.petstore.link.LinksResource;
-import io.swagger.v3.jaxrs2.resources.petstore.operations.DefaultOperationResource;
-import io.swagger.v3.jaxrs2.resources.petstore.operations.HiddenOperationResource;
-import io.swagger.v3.jaxrs2.resources.petstore.operations.OperationsResource;
-import io.swagger.v3.jaxrs2.resources.petstore.security.SecurityResource;
-import io.swagger.v3.jaxrs2.resources.petstore.tags.CompleteTagResource;
-import io.swagger.v3.jaxrs2.resources.petstore.tags.TagClassResource;
-import io.swagger.v3.jaxrs2.resources.petstore.tags.TagMethodResource;
-import io.swagger.v3.jaxrs2.resources.petstore.tags.TagOpenAPIDefinitionResource;
-import io.swagger.v3.jaxrs2.resources.petstore.tags.TagOperationResource;
+import io.swagger.v3.jaxrs2.petstore.EmptyPetResource;
+import io.swagger.v3.jaxrs2.petstore.callback.MultipleCallbacksTestWithOperationResource;
+import io.swagger.v3.jaxrs2.petstore.callback.RepeatableCallbackResource;
+import io.swagger.v3.jaxrs2.petstore.definition.OpenAPIDefinitionResource;
+import io.swagger.v3.jaxrs2.petstore.example.ExamplesResource;
+import io.swagger.v3.jaxrs2.petstore.link.LinksResource;
+import io.swagger.v3.jaxrs2.petstore.operations.DefaultOperationResource;
+import io.swagger.v3.jaxrs2.petstore.operations.HiddenOperationResource;
+import io.swagger.v3.jaxrs2.petstore.operations.OperationsResource;
+import io.swagger.v3.jaxrs2.petstore.requestbodies.RequestBodyResource;
+import io.swagger.v3.jaxrs2.petstore.security.SecurityResource;
+import io.swagger.v3.jaxrs2.petstore.tags.CompleteTagResource;
+import io.swagger.v3.jaxrs2.petstore.tags.TagClassResource;
+import io.swagger.v3.jaxrs2.petstore.tags.TagMethodResource;
+import io.swagger.v3.jaxrs2.petstore.tags.TagOpenAPIDefinitionResource;
+import io.swagger.v3.jaxrs2.petstore.tags.TagOperationResource;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
@@ -67,6 +68,11 @@ public class PetResourceTest extends AbstractAnnotationTest {
         compare(OpenAPIDefinitionResource.class, PETSTORE_SOURCE);
     }
 
+    @Test(description = "Test RequestBody resource)")
+    public void testRequestBodyResource() {
+        compare(RequestBodyResource.class, PETSTORE_SOURCE);
+    }
+
     @Test(description = "Test Security resource)")
     public void testSecurityResource() {
         compare(SecurityResource.class, PETSTORE_SOURCE);
@@ -83,7 +89,6 @@ public class PetResourceTest extends AbstractAnnotationTest {
 
     private void compare(final Class clazz, final String source) {
         final String file = source + clazz.getSimpleName() + YAML_EXTENSION;
-        assertEquals(readIntoYaml(clazz),
-                getOpenAPIasString(file));
+        assertEquals(readIntoYaml(clazz), getOpenAPIasString(file));
     }
 }

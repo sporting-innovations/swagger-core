@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.swagger.v3.jaxrs2.resources.petstore;
+package io.swagger.v3.jaxrs2.petstore;
 
 import io.swagger.v3.jaxrs2.resources.QueryResultBean;
 import io.swagger.v3.jaxrs2.resources.data.PetData;

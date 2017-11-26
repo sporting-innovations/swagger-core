@@ -1,4 +1,4 @@
-package io.swagger.v3.jaxrs2.resources.petstore.security;
+package io.swagger.v3.jaxrs2.petstore.security;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;

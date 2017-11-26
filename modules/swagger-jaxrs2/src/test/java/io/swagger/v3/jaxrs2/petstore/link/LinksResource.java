@@ -1,4 +1,4 @@
-package io.swagger.v3.jaxrs2.resources.petstore.link;
+package io.swagger.v3.jaxrs2.petstore.link;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.links.Link;
