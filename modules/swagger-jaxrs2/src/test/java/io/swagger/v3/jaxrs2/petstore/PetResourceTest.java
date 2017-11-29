@@ -1,7 +1,6 @@
 package io.swagger.v3.jaxrs2;
 
 import io.swagger.v3.jaxrs2.annotations.AbstractAnnotationTest;
-import io.swagger.v3.jaxrs2.resources.SimpleCallbackResource;
 import io.swagger.v3.jaxrs2.petstore.EmptyPetResource;
 import io.swagger.v3.jaxrs2.petstore.callback.MultipleCallbacksTestWithOperationResource;
 import io.swagger.v3.jaxrs2.petstore.callback.RepeatableCallbackResource;
@@ -12,12 +11,18 @@ import io.swagger.v3.jaxrs2.petstore.operations.DefaultOperationResource;
 import io.swagger.v3.jaxrs2.petstore.operations.HiddenOperationResource;
 import io.swagger.v3.jaxrs2.petstore.operations.OperationsResource;
 import io.swagger.v3.jaxrs2.petstore.requestbodies.RequestBodyResource;
+import io.swagger.v3.jaxrs2.petstore.responses.ImplementationResponseResource;
+import io.swagger.v3.jaxrs2.petstore.responses.MethodResponseResource;
+import io.swagger.v3.jaxrs2.petstore.responses.NoImplementationResponseResource;
+import io.swagger.v3.jaxrs2.petstore.responses.NoResponseResource;
+import io.swagger.v3.jaxrs2.petstore.responses.OperationResponseResource;
 import io.swagger.v3.jaxrs2.petstore.security.SecurityResource;
 import io.swagger.v3.jaxrs2.petstore.tags.CompleteTagResource;
 import io.swagger.v3.jaxrs2.petstore.tags.TagClassResource;
 import io.swagger.v3.jaxrs2.petstore.tags.TagMethodResource;
 import io.swagger.v3.jaxrs2.petstore.tags.TagOpenAPIDefinitionResource;
 import io.swagger.v3.jaxrs2.petstore.tags.TagOperationResource;
+import io.swagger.v3.jaxrs2.resources.SimpleCallbackResource;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
@@ -32,6 +37,7 @@ public class PetResourceTest extends AbstractAnnotationTest {
     private static final String TAGS_SOURCE = "petstore/tags/";
     private static final String OPERATIONS_SOURCE = "petstore/operations/";
     private static final String CALLBACKS_SOURCE = "petstore/callbacks/";
+    private static final String RESPONSES_SOURCE = "petstore/responses/";
     private static final String YAML_EXTENSION = ".yaml";
 
     @Test(description = "Test an empty resource class (Without operations or annotations)")
@@ -69,8 +75,17 @@ public class PetResourceTest extends AbstractAnnotationTest {
     }
 
     @Test(description = "Test RequestBody resource)")
-    public void testRequestBodyResource() {
+    public void tetRequestBodyResource() {
         compare(RequestBodyResource.class, PETSTORE_SOURCE);
+    }
+
+    @Test(description = "Test ApiResponses resource)")
+    public void testResponsesResource() {
+        compare(MethodResponseResource.class, RESPONSES_SOURCE);
+        compare(OperationResponseResource.class, RESPONSES_SOURCE);
+        compare(NoResponseResource.class, RESPONSES_SOURCE);
+        compare(ImplementationResponseResource.class, RESPONSES_SOURCE);
+        compare(NoImplementationResponseResource.class, RESPONSES_SOURCE);
     }
 
     @Test(description = "Test Security resource)")
