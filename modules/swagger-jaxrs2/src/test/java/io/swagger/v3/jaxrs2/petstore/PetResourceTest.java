@@ -10,6 +10,9 @@ import io.swagger.v3.jaxrs2.petstore.link.LinksResource;
 import io.swagger.v3.jaxrs2.petstore.operations.DefaultOperationResource;
 import io.swagger.v3.jaxrs2.petstore.operations.HiddenOperationResource;
 import io.swagger.v3.jaxrs2.petstore.operations.OperationsResource;
+import io.swagger.v3.jaxrs2.petstore.parameters.ArraySchemaResource;
+import io.swagger.v3.jaxrs2.petstore.parameters.ParametersResource;
+import io.swagger.v3.jaxrs2.petstore.parameters.RepeatableParametersResource;
 import io.swagger.v3.jaxrs2.petstore.requestbodies.RequestBodyResource;
 import io.swagger.v3.jaxrs2.petstore.responses.ImplementationResponseResource;
 import io.swagger.v3.jaxrs2.petstore.responses.MethodResponseResource;
@@ -38,6 +41,7 @@ public class PetResourceTest extends AbstractAnnotationTest {
     private static final String OPERATIONS_SOURCE = "petstore/operations/";
     private static final String CALLBACKS_SOURCE = "petstore/callbacks/";
     private static final String RESPONSES_SOURCE = "petstore/responses/";
+    private static final String PARAMETERS_SOURCE = "petstore/parameters/";
     private static final String YAML_EXTENSION = ".yaml";
 
     @Test(description = "Test an empty resource class (Without operations or annotations)")
@@ -77,6 +81,13 @@ public class PetResourceTest extends AbstractAnnotationTest {
     @Test(description = "Test RequestBody resource)")
     public void tetRequestBodyResource() {
         compare(RequestBodyResource.class, PETSTORE_SOURCE);
+    }
+
+    @Test(description = "Test Parameters resources)")
+    public void testParametersResource() {
+        compare(ParametersResource.class, PARAMETERS_SOURCE);
+        compare(RepeatableParametersResource.class, PARAMETERS_SOURCE);
+        compare(ArraySchemaResource.class, PARAMETERS_SOURCE);
     }
 
     @Test(description = "Test ApiResponses resource)")
