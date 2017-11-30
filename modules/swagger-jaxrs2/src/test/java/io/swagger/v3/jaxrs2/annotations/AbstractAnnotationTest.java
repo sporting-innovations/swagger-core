@@ -46,10 +46,8 @@ public abstract class AbstractAnnotationTest {
         try {
             return new String(Files.readAllBytes
                     (Paths.get(getClass().getClassLoader().getResource(file).toURI())));
-        } catch (IOException e) {
-            return "";
-        } catch (URISyntaxException e) {
-            return "";
+        } catch (IOException | URISyntaxException ex) {
+            return ex.getMessage();
         }
     }
 }
