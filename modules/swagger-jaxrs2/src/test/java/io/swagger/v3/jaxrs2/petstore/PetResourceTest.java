@@ -1,7 +1,6 @@
-package io.swagger.v3.jaxrs2;
+package io.swagger.v3.jaxrs2.petstore;
 
 import io.swagger.v3.jaxrs2.annotations.AbstractAnnotationTest;
-import io.swagger.v3.jaxrs2.petstore.EmptyPetResource;
 import io.swagger.v3.jaxrs2.petstore.callback.MultipleCallbacksTestWithOperationResource;
 import io.swagger.v3.jaxrs2.petstore.callback.RepeatableCallbackResource;
 import io.swagger.v3.jaxrs2.petstore.definition.OpenAPIDefinitionResource;
