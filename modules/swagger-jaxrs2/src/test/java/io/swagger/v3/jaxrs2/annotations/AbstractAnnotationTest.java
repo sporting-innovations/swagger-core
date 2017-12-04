@@ -6,11 +6,11 @@ import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.jaxrs2.Reader;
 import io.swagger.v3.jaxrs2.matchers.SerializationMatchers;
 import io.swagger.v3.oas.models.OpenAPI;
+import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 public abstract class AbstractAnnotationTest {
     public String readIntoYaml(Class<?> cls) {
@@ -42,12 +42,13 @@ public abstract class AbstractAnnotationTest {
         SerializationMatchers.assertEqualsToJson(Yaml.mapper().readValue(actualJson, OpenAPI.class), expectedJson);
     }
 
-    protected String getOpenAPIasString(final String file) {
+    protected String getOpenAPIasString(final String file) throws IOException {
+        InputStream in = null;
         try {
-            return new String(Files.readAllBytes
-                    (Paths.get(getClass().getClassLoader().getResource(file).toURI())));
-        } catch (IOException | URISyntaxException ex) {
-            return ex.getMessage();
+            in = getClass().getClassLoader().getResourceAsStream(file);
+            return IOUtils.toString(in, StandardCharsets.UTF_8);
+        } finally {
+            IOUtils.closeQuietly(in);
         }
     }
 }

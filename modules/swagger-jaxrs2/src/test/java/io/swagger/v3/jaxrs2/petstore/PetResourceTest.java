@@ -27,7 +27,9 @@ import io.swagger.v3.jaxrs2.petstore.tags.TagOperationResource;
 import io.swagger.v3.jaxrs2.resources.SimpleCallbackResource;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertEquals;
+import java.io.IOException;
+
+import static org.testng.Assert.fail;
 
 /**
  * Pet Resource Test Class
@@ -114,6 +116,12 @@ public class PetResourceTest extends AbstractAnnotationTest {
 
     private void compare(final Class clazz, final String source) {
         final String file = source + clazz.getSimpleName() + YAML_EXTENSION;
-        assertEquals(readIntoYaml(clazz), getOpenAPIasString(file));
+
+        try {
+            compareAsYaml(clazz, getOpenAPIasString(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }
     }
 }
