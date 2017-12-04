@@ -8,6 +8,7 @@ import io.swagger.v3.jaxrs2.petstore.example.ExamplesResource;
 import io.swagger.v3.jaxrs2.petstore.link.LinksResource;
 import io.swagger.v3.jaxrs2.petstore.operations.DefaultOperationResource;
 import io.swagger.v3.jaxrs2.petstore.operations.HiddenOperationResource;
+import io.swagger.v3.jaxrs2.petstore.operations.NotAnnotatedSameNameOperationResource;
 import io.swagger.v3.jaxrs2.petstore.operations.OperationsResource;
 import io.swagger.v3.jaxrs2.petstore.parameters.ArraySchemaResource;
 import io.swagger.v3.jaxrs2.petstore.parameters.ParametersResource;
@@ -43,6 +44,9 @@ public class PetResourceTest extends AbstractAnnotationTest {
     private static final String CALLBACKS_SOURCE = "petstore/callbacks/";
     private static final String RESPONSES_SOURCE = "petstore/responses/";
     private static final String PARAMETERS_SOURCE = "petstore/parameters/";
+    private static final String LINKS_SOURCE = "petstore/links/";
+    private static final String EXAMPLES_SOURCE = "petstore/examples/";
+    private static final String REQUEST_BODIES_SOURCE = "petstore/requestbodies/";
     private static final String YAML_EXTENSION = ".yaml";
 
     @Test(description = "Test an empty resource class (Without operations or annotations)")
@@ -52,12 +56,12 @@ public class PetResourceTest extends AbstractAnnotationTest {
 
     @Test(description = "Test a resource with examples)")
     public void testExamplesResource() {
-        compare(ExamplesResource.class, PETSTORE_SOURCE);
+        compare(ExamplesResource.class, EXAMPLES_SOURCE);
     }
 
     @Test(description = "Test a resource with Links)")
     public void testLinksResource() {
-        compare(LinksResource.class, PETSTORE_SOURCE);
+        compare(LinksResource.class, LINKS_SOURCE);
     }
 
     @Test(description = "Test some resources with Callbacks)")
@@ -72,6 +76,7 @@ public class PetResourceTest extends AbstractAnnotationTest {
         compare(HiddenOperationResource.class, OPERATIONS_SOURCE);
         compare(DefaultOperationResource.class, OPERATIONS_SOURCE);
         compare(OperationsResource.class, OPERATIONS_SOURCE);
+        compare(NotAnnotatedSameNameOperationResource.class, OPERATIONS_SOURCE);
     }
 
     @Test(description = "Test OpenAPIDefinition resource)")
@@ -81,7 +86,7 @@ public class PetResourceTest extends AbstractAnnotationTest {
 
     @Test(description = "Test RequestBody resource)")
     public void tetRequestBodyResource() {
-        compare(RequestBodyResource.class, PETSTORE_SOURCE);
+        compare(RequestBodyResource.class, REQUEST_BODIES_SOURCE);
     }
 
     @Test(description = "Test Parameters resources)")

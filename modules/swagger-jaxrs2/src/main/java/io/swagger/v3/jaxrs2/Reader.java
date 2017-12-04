@@ -244,7 +244,6 @@ public class Reader implements OpenApiReader {
         io.swagger.v3.oas.annotations.tags.Tag[] apiTags = ReflectionUtils.getRepeatableAnnotationsArray(cls, io.swagger.v3.oas.annotations.tags.Tag.class);
         io.swagger.v3.oas.annotations.servers.Server[] apiServers = ReflectionUtils.getRepeatableAnnotationsArray(cls, io.swagger.v3.oas.annotations.servers.Server.class);
 
-
         javax.ws.rs.Consumes classConsumes = ReflectionUtils.getAnnotation(cls, javax.ws.rs.Consumes.class);
         javax.ws.rs.Produces classProduces = ReflectionUtils.getAnnotation(cls, javax.ws.rs.Produces.class);
 
@@ -719,7 +718,7 @@ public class Reader implements OpenApiReader {
 
         // operation id
         if (StringUtils.isBlank(operation.getOperationId())) {
-            operation.setOperationId(method.getName());
+            operation.setOperationId(getOperationId(method.getName()));
         }
 
         if (apiOperation != null) {
