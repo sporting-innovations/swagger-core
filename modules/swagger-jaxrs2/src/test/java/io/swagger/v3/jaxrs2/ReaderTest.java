@@ -1,9 +1,11 @@
 package io.swagger.v3.jaxrs2;
 
+import io.swagger.v3.jaxrs2.matchers.SerializationMatchers;
 import io.swagger.v3.jaxrs2.resources.BasicFieldsResource;
 import io.swagger.v3.jaxrs2.resources.CompleteFieldsResource;
 import io.swagger.v3.jaxrs2.resources.DeprecatedFieldsResource;
 import io.swagger.v3.jaxrs2.resources.DuplicatedOperationIdResource;
+import io.swagger.v3.jaxrs2.resources.DuplicatedOperationMethodNameResource;
 import io.swagger.v3.jaxrs2.resources.DuplicatedSecurityResource;
 import io.swagger.v3.jaxrs2.resources.ExternalDocsReference;
 import io.swagger.v3.jaxrs2.resources.ResponseContentWithArrayResource;
@@ -163,6 +165,27 @@ public class ReaderTest {
         assertNotEquals(firstOperation.getOperationId(), secondOperation.getOperationId());
     }
 
+    @Test(description = "Get a Duplicated Operation Id with same id as method name")
+    public void testResolveDuplicatedOperationIdMethodName() {
+        Reader reader = new Reader(new OpenAPI());
+        OpenAPI openAPI = reader.read(DuplicatedOperationMethodNameResource.class);
+
+        Paths paths = openAPI.getPaths();
+        assertNotNull(paths);
+        Operation firstOperation = paths.get("/1").getGet();
+        Operation secondOperation = paths.get("/2").getGet();
+        assertNotNull(firstOperation);
+        assertNotNull(secondOperation);
+        assertNotEquals(firstOperation.getOperationId(), secondOperation.getOperationId());
+        Operation thirdOperation = paths.get("/3").getGet();
+        Operation fourthOperation = paths.get("/4").getGet();
+        assertNotNull(thirdOperation);
+        assertNotNull(fourthOperation);
+        assertNotEquals(thirdOperation.getOperationId(), fourthOperation.getOperationId());
+
+    }
+
+
     @Test(description = "Test a Set of classes")
     public void testSetOfClasses() {
         Set<Class<?>> classes = new HashSet<>();
@@ -238,6 +261,140 @@ public class ReaderTest {
         ApiResponse apiResponse = responses.get(RESPONSE_CODE_200);
         assertNotNull(apiResponse);
         assertEquals(RESPONSE_DESCRIPTION, apiResponse.getDescription());
+    }
+
+    @Test(description = "Responses with composition")
+    public void testGetResponsesWithComposition() {
+        Reader reader = new Reader(new OpenAPI());
+
+        OpenAPI openAPI = reader.read(ResponsesResource.class);
+        String yaml = "openapi: 3.0.1\n" +
+                "paths:\n" +
+                "  /:\n" +
+                "    get:\n" +
+                "      summary: Simple get operation\n" +
+                "      description: Defines a simple get operation with no inputs and a complex output\n" +
+                "        object\n" +
+                "      operationId: getWithPayloadResponse\n" +
+                "      responses:\n" +
+                "        200:\n" +
+                "          description: voila!\n" +
+                "          content:\n" +
+                "            application/json:\n" +
+                "              schema:\n" +
+                "                $ref: '#/components/schemas/SampleResponseSchema'\n" +
+                "        default:\n" +
+                "          description: boo\n" +
+                "          content:\n" +
+                "            '*/*':\n" +
+                "              schema:\n" +
+                "                $ref: '#/components/schemas/GenericError'\n" +
+                "      deprecated: true\n" +
+                "  /allOf:\n" +
+                "    get:\n" +
+                "      summary: Test inheritance / polymorphism\n" +
+                "      operationId: getAllOf\n" +
+                "      parameters:\n" +
+                "      - name: number\n" +
+                "        in: query\n" +
+                "        description: Test inheritance / polymorphism\n" +
+                "        required: true\n" +
+                "        schema:\n" +
+                "          type: integer\n" +
+                "          format: int32\n" +
+                "        example: 1\n" +
+                "      responses:\n" +
+                "        200:\n" +
+                "          description: bean answer\n" +
+                "          content:\n" +
+                "            application/json:\n" +
+                "              schema:\n" +
+                "                type: string\n" +
+                "                allOf:\n" +
+                "                - $ref: '#/components/schemas/MultipleSub1Bean'\n" +
+                "                - $ref: '#/components/schemas/MultipleSub2Bean'\n" +
+                "  /anyOf:\n" +
+                "    get:\n" +
+                "      summary: Test inheritance / polymorphism\n" +
+                "      operationId: getAnyOf\n" +
+                "      parameters:\n" +
+                "      - name: number\n" +
+                "        in: query\n" +
+                "        description: Test inheritance / polymorphism\n" +
+                "        required: true\n" +
+                "        schema:\n" +
+                "          type: integer\n" +
+                "          format: int32\n" +
+                "        example: 1\n" +
+                "      responses:\n" +
+                "        200:\n" +
+                "          description: bean answer\n" +
+                "          content:\n" +
+                "            application/json:\n" +
+                "              schema:\n" +
+                "                type: string\n" +
+                "                anyOf:\n" +
+                "                - $ref: '#/components/schemas/MultipleSub1Bean'\n" +
+                "                - $ref: '#/components/schemas/MultipleSub2Bean'\n" +
+                "  /oneOf:\n" +
+                "    get:\n" +
+                "      summary: Test inheritance / polymorphism\n" +
+                "      operationId: getOneOf\n" +
+                "      parameters:\n" +
+                "      - name: number\n" +
+                "        in: query\n" +
+                "        description: Test inheritance / polymorphism\n" +
+                "        required: true\n" +
+                "        schema:\n" +
+                "          type: integer\n" +
+                "          format: int32\n" +
+                "        example: 1\n" +
+                "      responses:\n" +
+                "        200:\n" +
+                "          description: bean answer\n" +
+                "          content:\n" +
+                "            application/json:\n" +
+                "              schema:\n" +
+                "                type: string\n" +
+                "                oneOf:\n" +
+                "                - $ref: '#/components/schemas/MultipleSub1Bean'\n" +
+                "                - $ref: '#/components/schemas/MultipleSub2Bean'\n" +
+                "components:\n" +
+                "  schemas:\n" +
+                "    MultipleSub2Bean:\n" +
+                "      type: object\n" +
+                "      properties:\n" +
+                "        d:\n" +
+                "          type: integer\n" +
+                "          format: int32\n" +
+                "      description: MultipleSub2Bean\n" +
+                "      allOf:\n" +
+                "      - $ref: '#/components/schemas/MultipleBaseBean'\n" +
+                "    GenericError:\n" +
+                "      type: object\n" +
+                "    MultipleBaseBean:\n" +
+                "      type: object\n" +
+                "      properties:\n" +
+                "        beanType:\n" +
+                "          type: string\n" +
+                "        a:\n" +
+                "          type: integer\n" +
+                "          format: int32\n" +
+                "        b:\n" +
+                "          type: string\n" +
+                "      description: MultipleBaseBean\n" +
+                "    MultipleSub1Bean:\n" +
+                "      type: object\n" +
+                "      properties:\n" +
+                "        c:\n" +
+                "          type: integer\n" +
+                "          format: int32\n" +
+                "      description: MultipleSub1Bean\n" +
+                "      allOf:\n" +
+                "      - $ref: '#/components/schemas/MultipleBaseBean'\n" +
+                "    SampleResponseSchema:\n" +
+                "      type: object";
+        SerializationMatchers.assertEqualsToYaml(openAPI, yaml);
     }
 
     @Test(description = "External Docs")

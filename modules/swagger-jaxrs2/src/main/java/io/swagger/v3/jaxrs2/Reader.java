@@ -448,6 +448,7 @@ public class Reader implements OpenApiReader {
                     }
 
                     openAPI.setPaths(this.paths);
+
                 }
             }
         }
@@ -503,33 +504,37 @@ public class Reader implements OpenApiReader {
                                       Consumes methodConsumes, Consumes classConsumes,
                                       List<Parameter> operationParameters,
                                       Annotation[] paramAnnotations, Type type) {
-        if (operation.getRequestBody() == null) {
-            io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyAnnotation = getRequestBody(Arrays.asList(paramAnnotations));
-            if (requestBodyAnnotation != null) {
-                Optional<RequestBody> optionalRequestBody = OperationParser.getRequestBody(requestBodyAnnotation, classConsumes, methodConsumes, components);
-                if (optionalRequestBody.isPresent()) {
-                    RequestBody requestBody = optionalRequestBody.get();
-                    if (StringUtils.isBlank(requestBody.get$ref()) &&
-                            (requestBody.getContent() == null || requestBody.getContent().isEmpty())) {
-                        if (requestBodyParameter.getSchema() != null) {
-                            Content content = processContent(requestBody.getContent(), requestBodyParameter.getSchema(), methodConsumes, classConsumes);
-                            requestBody.setContent(content);
-                        }
-                    } else if (StringUtils.isBlank(requestBody.get$ref()) &&
-                            requestBody.getContent() != null &&
-                            !requestBody.getContent().isEmpty()) {
-                        if (requestBodyParameter.getSchema() != null) {
-                            for (MediaType mediaType : requestBody.getContent().values()) {
-                                if (StringUtils.isBlank(mediaType.getSchema().getType())) {
-                                    mediaType.getSchema().setType(requestBodyParameter.getSchema().getType());
-                                }
+
+        io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyAnnotation = getRequestBody(Arrays.asList(paramAnnotations));
+        if (requestBodyAnnotation != null) {
+            Optional<RequestBody> optionalRequestBody = OperationParser.getRequestBody(requestBodyAnnotation, classConsumes, methodConsumes, components);
+            if (optionalRequestBody.isPresent()) {
+                RequestBody requestBody = optionalRequestBody.get();
+                if (StringUtils.isBlank(requestBody.get$ref()) &&
+                        (requestBody.getContent() == null || requestBody.getContent().isEmpty())) {
+                    if (requestBodyParameter.getSchema() != null) {
+                        Content content = processContent(requestBody.getContent(), requestBodyParameter.getSchema(), methodConsumes, classConsumes);
+                        requestBody.setContent(content);
+                    }
+                } else if (StringUtils.isBlank(requestBody.get$ref()) &&
+                        requestBody.getContent() != null &&
+                        !requestBody.getContent().isEmpty()) {
+                    if (requestBodyParameter.getSchema() != null) {
+                        for (MediaType mediaType : requestBody.getContent().values()) {
+                            if (mediaType.getSchema() == null) {
+                                mediaType.setSchema(new Schema());
+                            }
+                            if (StringUtils.isBlank(mediaType.getSchema().getType())) {
+                                mediaType.getSchema().setType(requestBodyParameter.getSchema().getType());
                             }
                         }
                     }
-
-                    operation.setRequestBody(requestBody);
                 }
-            } else {
+
+                operation.setRequestBody(requestBody);
+            }
+        } else {
+            if (operation.getRequestBody() == null) {
                 boolean isRequestBodyEmpty = true;
                 RequestBody requestBody = new RequestBody();
                 if (StringUtils.isNotBlank(requestBodyParameter.get$ref())) {
@@ -641,6 +646,10 @@ public class Reader implements OpenApiReader {
         List<io.swagger.v3.oas.annotations.tags.Tag> apiTags = ReflectionUtils.getRepeatableAnnotations(method, io.swagger.v3.oas.annotations.tags.Tag.class);
         List<io.swagger.v3.oas.annotations.Parameter> apiParameters = ReflectionUtils.getRepeatableAnnotations(method, io.swagger.v3.oas.annotations.Parameter.class);
         List<io.swagger.v3.oas.annotations.responses.ApiResponse> apiResponses = ReflectionUtils.getRepeatableAnnotations(method, io.swagger.v3.oas.annotations.responses.ApiResponse.class);
+        io.swagger.v3.oas.annotations.parameters.RequestBody apiRequestBody =
+                ReflectionUtils.getAnnotation(method, io.swagger.v3.oas.annotations.parameters.RequestBody.class);
+
+
         // TODO extensions
         List<Extension> apiExtensions = ReflectionUtils.getRepeatableAnnotations(method, Extension.class);
         ExternalDocumentation apiExternalDocumentation = ReflectionUtils.getAnnotation(method, ExternalDocumentation.class);
@@ -707,7 +716,12 @@ public class Reader implements OpenApiReader {
 
         // apiResponses
         if (apiResponses != null) {
-            OperationParser.getApiResponses(apiResponses.toArray(new io.swagger.v3.oas.annotations.responses.ApiResponse[apiResponses.size()]), classProduces, methodProduces, components).ifPresent(responses -> {
+            OperationParser.getApiResponses(
+                    apiResponses.toArray(new io.swagger.v3.oas.annotations.responses.ApiResponse[apiResponses.size()]),
+                    classProduces,
+                    methodProduces,
+                    components
+            ).ifPresent(responses -> {
                 if (operation.getResponses() == null) {
                     operation.setResponses(responses);
                 } else {
@@ -716,9 +730,15 @@ public class Reader implements OpenApiReader {
             });
         }
 
+        // RequestBody in Method
+        if (apiRequestBody != null && operation.getRequestBody() == null){
+            OperationParser.getRequestBody(apiRequestBody, classConsumes, methodConsumes, components).ifPresent(
+                    operation::setRequestBody);
+        }
+
         // operation id
         if (StringUtils.isBlank(operation.getOperationId())) {
-            operation.setOperationId(method.getName());
+            operation.setOperationId(getOperationId(method.getName()));
         }
 
         if (apiOperation != null) {
@@ -773,6 +793,7 @@ public class Reader implements OpenApiReader {
             operation.setResponses(new ApiResponses()._default(apiResponseObject));
 
         }
+
         return operation;
     }
 
@@ -900,6 +921,13 @@ public class Reader implements OpenApiReader {
                     .filter(r -> operation.getSecurity() == null || !operation.getSecurity().contains(r))
                     .forEach(operation::addSecurityItem);
         }
+
+        // RequestBody in Operation
+        if (apiOperation != null && apiOperation.requestBody() != null && operation.getRequestBody() == null) {
+            OperationParser.getRequestBody(apiOperation.requestBody(), classConsumes, methodConsumes, components).ifPresent(
+                    requestBodyObject -> operation.setRequestBody(requestBodyObject));
+        }
+
     }
 
     protected String getOperationId(String operationId) {

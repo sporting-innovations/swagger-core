@@ -17,6 +17,7 @@
 package io.swagger.v3.oas.annotations;
 
 import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.servers.Server;
@@ -51,7 +52,7 @@ import java.lang.annotation.Target;
  * <li>hidden: @{@link Hidden}</li>
  * </ul>
  *
- * @see <a target="_new" href="https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.0.md#operationObject">Operation (OpenAPI specification)</a>
+ * @see <a target="_new" href="https://github.com/OAI/OpenAPI-Specification/blob/3.0.1/versions/3.0.1.md#operationObject">Operation (OpenAPI specification)</a>
  **/
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
@@ -84,6 +85,13 @@ public @interface Operation {
      * @return a description of this operation
      **/
     String description() default "";
+
+    /**
+     * Request body associated to the operation.
+     *
+     * @return a request body.
+     */
+    RequestBody requestBody() default @RequestBody();
 
     /**
      * Additional external documentation for this operation.
