@@ -7,6 +7,7 @@ import io.swagger.v3.jaxrs2.petstore.definition.OpenAPIDefinitionResource;
 import io.swagger.v3.jaxrs2.petstore.example.ExamplesResource;
 import io.swagger.v3.jaxrs2.petstore.link.LinksResource;
 import io.swagger.v3.jaxrs2.petstore.operations.DefaultOperationResource;
+import io.swagger.v3.jaxrs2.petstore.operations.ExternalDocumentationResource;
 import io.swagger.v3.jaxrs2.petstore.operations.HiddenOperationResource;
 import io.swagger.v3.jaxrs2.petstore.operations.NotAnnotatedSameNameOperationResource;
 import io.swagger.v3.jaxrs2.petstore.operations.OperationsResource;
@@ -19,6 +20,7 @@ import io.swagger.v3.jaxrs2.petstore.responses.MethodResponseResource;
 import io.swagger.v3.jaxrs2.petstore.responses.NoImplementationResponseResource;
 import io.swagger.v3.jaxrs2.petstore.responses.NoResponseResource;
 import io.swagger.v3.jaxrs2.petstore.responses.OperationResponseResource;
+import io.swagger.v3.jaxrs2.petstore.responses.PriorityResponseResource;
 import io.swagger.v3.jaxrs2.petstore.security.SecurityResource;
 import io.swagger.v3.jaxrs2.petstore.tags.CompleteTagResource;
 import io.swagger.v3.jaxrs2.petstore.tags.TagClassResource;
@@ -77,6 +79,7 @@ public class PetResourceTest extends AbstractAnnotationTest {
         compare(DefaultOperationResource.class, OPERATIONS_SOURCE);
         compare(OperationsResource.class, OPERATIONS_SOURCE);
         compare(NotAnnotatedSameNameOperationResource.class, OPERATIONS_SOURCE);
+        compare(ExternalDocumentationResource.class, OPERATIONS_SOURCE);
     }
 
     @Test(description = "Test OpenAPIDefinition resource)")
@@ -103,6 +106,7 @@ public class PetResourceTest extends AbstractAnnotationTest {
         compare(NoResponseResource.class, RESPONSES_SOURCE);
         compare(ImplementationResponseResource.class, RESPONSES_SOURCE);
         compare(NoImplementationResponseResource.class, RESPONSES_SOURCE);
+        compare(PriorityResponseResource.class, RESPONSES_SOURCE);
     }
 
     @Test(description = "Test Security resource)")
