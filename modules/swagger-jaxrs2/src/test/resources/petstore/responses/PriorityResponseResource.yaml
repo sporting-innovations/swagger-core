@@ -7,4 +7,4 @@ paths:
       operationId: getPets
       responses:
         200:
-          description: Inside Operation Response
+          description: Inside Method Operation
