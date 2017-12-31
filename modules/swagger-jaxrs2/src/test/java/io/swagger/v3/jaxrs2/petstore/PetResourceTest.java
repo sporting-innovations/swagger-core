@@ -25,6 +25,7 @@ import io.swagger.v3.jaxrs2.petstore.responses.NoResponseResource;
 import io.swagger.v3.jaxrs2.petstore.responses.OperationResponseResource;
 import io.swagger.v3.jaxrs2.petstore.responses.PriorityResponseResource;
 import io.swagger.v3.jaxrs2.petstore.security.SecurityResource;
+import io.swagger.v3.jaxrs2.petstore.subresources.SubResource;
 import io.swagger.v3.jaxrs2.petstore.tags.CompleteTagResource;
 import io.swagger.v3.jaxrs2.petstore.tags.TagClassResource;
 import io.swagger.v3.jaxrs2.petstore.tags.TagMethodResource;
@@ -52,6 +53,7 @@ public class PetResourceTest extends AbstractAnnotationTest {
     private static final String LINKS_SOURCE = "petstore/links/";
     private static final String EXAMPLES_SOURCE = "petstore/examples/";
     private static final String REQUEST_BODIES_SOURCE = "petstore/requestbodies/";
+    private static final String SUBRESOURCES_SOURCE = "petstore/subresources/";
     private static final String YAML_EXTENSION = ".yaml";
 
     @Test(description = "Test an empty resource class (Without operations or annotations)")
@@ -89,6 +91,11 @@ public class PetResourceTest extends AbstractAnnotationTest {
     @Test(description = "Test OpenAPIDefinition resource)")
     public void testOpenAPIDefinitionResource() {
         compare(OpenAPIDefinitionResource.class, PETSTORE_SOURCE);
+    }
+
+    @Test(description = "Sub resources tests)")
+    public void testSubResource() {
+        compare(SubResource.class, SUBRESOURCES_SOURCE);
     }
 
     @Test(description = "Test RequestBody resource)")
