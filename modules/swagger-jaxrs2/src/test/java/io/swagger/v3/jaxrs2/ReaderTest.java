@@ -185,7 +185,6 @@ public class ReaderTest {
 
     }
 
-
     @Test(description = "Test a Set of classes")
     public void testSetOfClasses() {
         Set<Class<?>> classes = new HashSet<>();
