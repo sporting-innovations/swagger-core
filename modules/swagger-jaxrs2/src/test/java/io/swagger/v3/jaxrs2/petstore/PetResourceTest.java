@@ -15,6 +15,8 @@ import io.swagger.v3.jaxrs2.petstore.operations.ServerOperationResource;
 import io.swagger.v3.jaxrs2.petstore.parameters.ArraySchemaResource;
 import io.swagger.v3.jaxrs2.petstore.parameters.ParametersResource;
 import io.swagger.v3.jaxrs2.petstore.parameters.RepeatableParametersResource;
+import io.swagger.v3.jaxrs2.petstore.requestbodies.RequestBodyMethodPriorityResource;
+import io.swagger.v3.jaxrs2.petstore.requestbodies.RequestBodyParameterPriorityResource;
 import io.swagger.v3.jaxrs2.petstore.requestbodies.RequestBodyResource;
 import io.swagger.v3.jaxrs2.petstore.responses.ImplementationResponseResource;
 import io.swagger.v3.jaxrs2.petstore.responses.MethodResponseResource;
@@ -92,6 +94,8 @@ public class PetResourceTest extends AbstractAnnotationTest {
     @Test(description = "Test RequestBody resource)")
     public void tetRequestBodyResource() {
         compare(RequestBodyResource.class, REQUEST_BODIES_SOURCE);
+        compare(RequestBodyParameterPriorityResource.class, REQUEST_BODIES_SOURCE);
+        compare(RequestBodyMethodPriorityResource.class, REQUEST_BODIES_SOURCE);
     }
 
     @Test(description = "Test Parameters resources)")
