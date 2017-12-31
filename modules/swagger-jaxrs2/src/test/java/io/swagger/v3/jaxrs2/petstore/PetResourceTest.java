@@ -11,6 +11,7 @@ import io.swagger.v3.jaxrs2.petstore.operations.ExternalDocumentationResource;
 import io.swagger.v3.jaxrs2.petstore.operations.HiddenOperationResource;
 import io.swagger.v3.jaxrs2.petstore.operations.NotAnnotatedSameNameOperationResource;
 import io.swagger.v3.jaxrs2.petstore.operations.OperationsResource;
+import io.swagger.v3.jaxrs2.petstore.operations.ServerOperationResource;
 import io.swagger.v3.jaxrs2.petstore.parameters.ArraySchemaResource;
 import io.swagger.v3.jaxrs2.petstore.parameters.ParametersResource;
 import io.swagger.v3.jaxrs2.petstore.parameters.RepeatableParametersResource;
@@ -80,6 +81,7 @@ public class PetResourceTest extends AbstractAnnotationTest {
         compare(OperationsResource.class, OPERATIONS_SOURCE);
         compare(NotAnnotatedSameNameOperationResource.class, OPERATIONS_SOURCE);
         compare(ExternalDocumentationResource.class, OPERATIONS_SOURCE);
+        compare(ServerOperationResource.class, OPERATIONS_SOURCE);
     }
 
     @Test(description = "Test OpenAPIDefinition resource)")
