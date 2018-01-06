@@ -241,7 +241,7 @@ public class Reader implements OpenApiReader {
         List<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme = ReflectionUtils.getRepeatableAnnotations(cls, io.swagger.v3.oas.annotations.security.SecurityScheme.class);
         List<io.swagger.v3.oas.annotations.security.SecurityRequirement> apiSecurityRequirements = ReflectionUtils.getRepeatableAnnotations(cls, io.swagger.v3.oas.annotations.security.SecurityRequirement.class);
         List<Extension> apiClassExtensions = ReflectionUtils.getRepeatableAnnotations(cls, Extension.class);
-        openAPI.setExtensions(getExtensions(apiClassExtensions));
+        openAPI.setExtensions(OperationParser.getExtensions(apiClassExtensions));
 
         ExternalDocumentation apiExternalDocs = ReflectionUtils.getAnnotation(cls, ExternalDocumentation.class);
         io.swagger.v3.oas.annotations.tags.Tag[] apiTags = ReflectionUtils.getRepeatableAnnotationsArray(cls, io.swagger.v3.oas.annotations.tags.Tag.class);
@@ -652,7 +652,6 @@ public class Reader implements OpenApiReader {
         io.swagger.v3.oas.annotations.parameters.RequestBody apiRequestBody =
                 ReflectionUtils.getAnnotation(method, io.swagger.v3.oas.annotations.parameters.RequestBody.class);
 
-        // TODO extensions
         List<Extension> apiExtensions = ReflectionUtils.getRepeatableAnnotations(method, Extension.class);
         ExternalDocumentation apiExternalDocumentation = ReflectionUtils.getAnnotation(method, ExternalDocumentation.class);
 
@@ -930,6 +929,8 @@ public class Reader implements OpenApiReader {
                     requestBodyObject -> operation.setRequestBody(requestBodyObject));
         }
 
+        // Extensions in Operation
+        operation.setExtensions(OperationParser.getExtensions(Arrays.asList(apiOperation.extensions())));
     }
 
     protected String getOperationId(String operationId) {
@@ -1098,19 +1099,5 @@ public class Reader implements OpenApiReader {
             return true;
         }
         return false;
-    }
-
-    private Map<String, Object> getExtensions(final List<Extension> apiExtensions) {
-        final Map<String, Object> extensions = new HashMap<>();
-        if (apiExtensions != null) {
-            apiExtensions.forEach(extension -> {
-                final Map<String, String> properties = new HashMap<>();
-                Arrays.asList(extension.properties()).forEach(extensionProperty -> {
-                    properties.put(extensionProperty.name(), extensionProperty.value());
-                });
-                extensions.put(extension.name(), properties);
-            });
-        }
-        return extensions;
     }
 }

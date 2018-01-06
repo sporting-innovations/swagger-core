@@ -3,6 +3,7 @@ package io.swagger.v3.jaxrs2;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.media.Encoding;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.models.Components;
@@ -18,6 +19,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -181,6 +185,20 @@ public class OperationParser {
             }
         }
         return Optional.empty();
+    }
+
+    public static Map<String, Object> getExtensions(final List<Extension> apiExtensions) {
+        final Map<String, Object> extensions = new HashMap<>();
+        if (apiExtensions != null) {
+            apiExtensions.forEach(extension -> {
+                final Map<String, String> properties = new HashMap<>();
+                Arrays.asList(extension.properties()).forEach(extensionProperty -> {
+                    properties.put(extensionProperty.name(), extensionProperty.value());
+                });
+                extensions.put(extension.name(), properties);
+            });
+        }
+        return extensions;
     }
 
 }

@@ -16,6 +16,7 @@ import io.swagger.v3.jaxrs2.resources.SimpleCallbackResource;
 import io.swagger.v3.jaxrs2.resources.SimpleMethods;
 import io.swagger.v3.jaxrs2.resources.TagsResource;
 import io.swagger.v3.jaxrs2.resources.extensions.ClassExtensionsResource;
+import io.swagger.v3.jaxrs2.resources.extensions.OperationExtensionsResource;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -419,6 +420,19 @@ public class ReaderTest {
         OpenAPI openAPI = reader.read(ClassExtensionsResource.class);
         assertNotNull(openAPI);
         assertEquals(2, openAPI.getExtensions().size());
+        assertNotNull(openAPI.getExtensions().get("x-class-independent"));
+        assertNotNull(openAPI.getExtensions().get("x-class"));
+    }
+
+    @Test(description = "Extensions Tests")
+    public void testOperationExtensions() {
+        Reader reader = new Reader(new OpenAPI());
+        OpenAPI openAPI = reader.read(OperationExtensionsResource.class);
+        assertNotNull(openAPI);
+        Map<String, Object> extensions = openAPI.getPaths().get("/").getGet().getExtensions();
+        assertEquals(1, extensions.size());
+        assertNotNull(extensions.get("x-operation"));
+
     }
 
     @Test(description = "Security Requirement")
