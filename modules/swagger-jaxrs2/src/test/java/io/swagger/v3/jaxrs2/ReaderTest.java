@@ -414,7 +414,7 @@ public class ReaderTest {
     }
 
     @Test(description = "Extensions Tests")
-    public void testExtensions() {
+    public void testClassExtensions() {
         Reader reader = new Reader(new OpenAPI());
         OpenAPI openAPI = reader.read(ClassExtensionsResource.class);
         assertNotNull(openAPI);

@@ -1104,7 +1104,11 @@ public class Reader implements OpenApiReader {
         final Map<String, Object> extensions = new HashMap<>();
         if (apiExtensions != null) {
             apiExtensions.forEach(extension -> {
-                extensions.put(extension.name(), extension.properties());
+                final Map<String, String> properties = new HashMap<>();
+                Arrays.asList(extension.properties()).forEach(extensionProperty -> {
+                    properties.put(extensionProperty.name(), extensionProperty.value());
+                });
+                extensions.put(extension.name(), properties);
             });
         }
         return extensions;
