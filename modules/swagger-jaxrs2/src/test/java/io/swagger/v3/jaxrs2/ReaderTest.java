@@ -430,8 +430,10 @@ public class ReaderTest {
         OpenAPI openAPI = reader.read(OperationExtensionsResource.class);
         assertNotNull(openAPI);
         Map<String, Object> extensions = openAPI.getPaths().get("/").getGet().getExtensions();
-        assertEquals(1, extensions.size());
+        assertEquals(3, extensions.size());
         assertNotNull(extensions.get("x-operation"));
+        assertNotNull(extensions.get("x-operation-independent"));
+        assertNotNull(extensions.get("x-operation-extensions"));
 
     }
 

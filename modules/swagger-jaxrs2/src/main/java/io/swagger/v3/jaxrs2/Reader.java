@@ -653,6 +653,7 @@ public class Reader implements OpenApiReader {
                 ReflectionUtils.getAnnotation(method, io.swagger.v3.oas.annotations.parameters.RequestBody.class);
 
         List<Extension> apiExtensions = ReflectionUtils.getRepeatableAnnotations(method, Extension.class);
+        operation.setExtensions(OperationParser.getExtensions(apiExtensions));
         ExternalDocumentation apiExternalDocumentation = ReflectionUtils.getAnnotation(method, ExternalDocumentation.class);
 
         // callbacks
@@ -930,7 +931,11 @@ public class Reader implements OpenApiReader {
         }
 
         // Extensions in Operation
-        operation.setExtensions(OperationParser.getExtensions(Arrays.asList(apiOperation.extensions())));
+        Map<String, Object> extensions = OperationParser.getExtensions(Arrays.asList(apiOperation.extensions()));
+        if (operation.getExtensions().size() > 0) {
+            extensions.putAll(operation.getExtensions());
+        }
+        operation.setExtensions(extensions);
     }
 
     protected String getOperationId(String operationId) {
