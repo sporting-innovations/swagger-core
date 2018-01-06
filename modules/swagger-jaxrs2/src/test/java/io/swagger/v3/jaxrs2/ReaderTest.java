@@ -15,6 +15,7 @@ import io.swagger.v3.jaxrs2.resources.ServersResource;
 import io.swagger.v3.jaxrs2.resources.SimpleCallbackResource;
 import io.swagger.v3.jaxrs2.resources.SimpleMethods;
 import io.swagger.v3.jaxrs2.resources.TagsResource;
+import io.swagger.v3.jaxrs2.resources.extensions.ClassExtensionsResource;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -410,6 +411,14 @@ public class ReaderTest {
         externalDocs = openAPI.getComponents().getSchemas().get("ExternalDocsSchema").getExternalDocs();
         assertEquals("External documentation description in schema", externalDocs.getDescription());
         assertEquals(externalDocs.getUrl(), EXTERNAL_DOCS_URL);
+    }
+
+    @Test(description = "Extensions Tests")
+    public void testExtensions() {
+        Reader reader = new Reader(new OpenAPI());
+        OpenAPI openAPI = reader.read(ClassExtensionsResource.class);
+        assertNotNull(openAPI);
+        assertEquals(2, openAPI.getExtensions().size());
     }
 
     @Test(description = "Security Requirement")
