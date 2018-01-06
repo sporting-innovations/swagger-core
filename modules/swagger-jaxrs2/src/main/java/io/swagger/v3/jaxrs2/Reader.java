@@ -932,8 +932,9 @@ public class Reader implements OpenApiReader {
 
         // Extensions in Operation
         Map<String, Object> extensions = OperationParser.getExtensions(Arrays.asList(apiOperation.extensions()));
-        if (operation.getExtensions().size() > 0) {
-            extensions.putAll(operation.getExtensions());
+        Map<String, Object> opExtensions = operation.getExtensions();
+        if (opExtensions != null && opExtensions.size() > 0) {
+            extensions.putAll(opExtensions);
         }
         operation.setExtensions(extensions);
     }

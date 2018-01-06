@@ -434,7 +434,6 @@ public class ReaderTest {
         assertNotNull(extensions.get("x-operation"));
         assertNotNull(extensions.get("x-operation-independent"));
         assertNotNull(extensions.get("x-operation-extensions"));
-
     }
 
     @Test(description = "Security Requirement")
