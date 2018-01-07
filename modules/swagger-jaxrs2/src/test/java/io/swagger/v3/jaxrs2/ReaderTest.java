@@ -17,6 +17,7 @@ import io.swagger.v3.jaxrs2.resources.SimpleMethods;
 import io.swagger.v3.jaxrs2.resources.TagsResource;
 import io.swagger.v3.jaxrs2.resources.extensions.ClassExtensionsResource;
 import io.swagger.v3.jaxrs2.resources.extensions.OperationExtensionsResource;
+import io.swagger.v3.jaxrs2.resources.extensions.ParameterExtensionsResource;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -414,7 +415,7 @@ public class ReaderTest {
         assertEquals(externalDocs.getUrl(), EXTERNAL_DOCS_URL);
     }
 
-    @Test(description = "Extensions Tests")
+    @Test(description = "ClassExtensions Tests")
     public void testClassExtensions() {
         Reader reader = new Reader(new OpenAPI());
         OpenAPI openAPI = reader.read(ClassExtensionsResource.class);
@@ -424,7 +425,7 @@ public class ReaderTest {
         assertNotNull(openAPI.getExtensions().get("x-class"));
     }
 
-    @Test(description = "Extensions Tests")
+    @Test(description = "OperationExtensions Tests")
     public void testOperationExtensions() {
         Reader reader = new Reader(new OpenAPI());
         OpenAPI openAPI = reader.read(OperationExtensionsResource.class);
@@ -434,6 +435,20 @@ public class ReaderTest {
         assertNotNull(extensions.get("x-operation"));
         assertNotNull(extensions.get("x-operation-independent"));
         assertNotNull(extensions.get("x-operation-extensions"));
+    }
+
+    @Test(description = "ParameterExtensions Tests")
+    public void testParameterExtensions() {
+        Reader reader = new Reader(new OpenAPI());
+        OpenAPI openAPI = reader.read(ParameterExtensionsResource.class);
+        assertNotNull(openAPI);
+        Map<String, Object> extensions = openAPI.getPaths().get("/").getGet().getRequestBody().getExtensions();
+        assertNotNull(extensions);
+        assertEquals(3, extensions.size());
+        assertNotNull(extensions.get("x-parameter"));
+        assertNotNull(extensions.get("x-extension"));
+        assertNotNull(extensions.get("x-extension2"));
+
     }
 
     @Test(description = "Security Requirement")

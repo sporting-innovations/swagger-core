@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.Extensions;
 import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.integration.ContextUtils;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
@@ -509,6 +510,7 @@ public class Reader implements OpenApiReader {
                                       Annotation[] paramAnnotations, Type type) {
 
         io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyAnnotation = getRequestBody(Arrays.asList(paramAnnotations));
+        final Map<String, Object> extensions = OperationParser.getExtensions(getExtension(Arrays.asList(paramAnnotations)));
         if (requestBodyAnnotation != null) {
             Optional<RequestBody> optionalRequestBody = OperationParser.getRequestBody(requestBodyAnnotation, classConsumes, methodConsumes, components);
             if (optionalRequestBody.isPresent()) {
@@ -533,7 +535,7 @@ public class Reader implements OpenApiReader {
                         }
                     }
                 }
-
+                requestBody.setExtensions(extensions);
                 operation.setRequestBody(requestBody);
             }
         } else {
@@ -559,6 +561,7 @@ public class Reader implements OpenApiReader {
                     isRequestBodyEmpty = false;
                 }
                 if (!isRequestBodyEmpty) {
+                    requestBody.setExtensions(extensions);
                     operation.setRequestBody(requestBody);
                 }
             }
@@ -575,6 +578,27 @@ public class Reader implements OpenApiReader {
             }
         }
         return null;
+    }
+
+    private List<Extension> getExtension(List<Annotation> annotations) {
+        if (annotations == null) {
+            return null;
+        }
+        List<Extension> extensions = new ArrayList<>();
+        for (Annotation a : annotations) {
+            if (a instanceof Extension) {
+                extensions.add((Extension) a);
+            } else if (a instanceof Extensions) {
+                Extension[] value = ((Extensions) a).value();
+                if (value != null) {
+                    Arrays.asList(value).forEach(extension -> {
+                        extensions.add(extension);
+                    });
+                }
+
+            }
+        }
+        return extensions;
     }
 
     private void setMediaTypeToContent(Schema schema, Content content, String value) {
