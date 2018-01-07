@@ -34,4 +34,6 @@ public class OperationExtensionsResource {
     public Response getSummaryAndDescription() {
         return Response.ok().entity("ok").build();
     }
+
+
 }
