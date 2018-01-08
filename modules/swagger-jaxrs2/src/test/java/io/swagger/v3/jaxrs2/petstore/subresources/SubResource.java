@@ -7,7 +7,6 @@ import javax.ws.rs.core.Response;
 
 /**
  * SubResource
- * Created by rafaellopez on 12/31/17.
  */
 
 public class SubResource implements InterfaceResource {

@@ -10,9 +10,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
-/**
- * Created by rafaellopez on 11/22/17.
- */
 public class MultipleCallbacksTestWithOperationResource {
     @Callbacks({
             @Callback(

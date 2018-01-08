@@ -17,7 +17,6 @@ import javax.ws.rs.core.Response;
 
 /**
  * Resource with RequestBody examples
- * Created by rafaellopez on 11/26/17.
  */
 public class RequestBodyResource {
     @POST

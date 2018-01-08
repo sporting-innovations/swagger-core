@@ -16,7 +16,6 @@ import javax.ws.rs.Path;
 
 /**
  * Resource with some Parameters examples
- * Created by rafaellopez on 11/29/17.
  */
 public class ParametersResource {
     @Path("/test")

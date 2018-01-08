@@ -41,7 +41,6 @@ import static org.testng.Assert.fail;
 /**
  * Pet Resource Test Class
  * Adding a lot of tests of different pet resource examples
- * Created by rafaellopez on 11/9/17.
  */
 public class PetResourceTest extends AbstractAnnotationTest {
     private static final String PETSTORE_SOURCE = "petstore/";

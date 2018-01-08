@@ -11,7 +11,6 @@ import javax.ws.rs.QueryParam;
 
 /**
  * Resource with a Response at Method Level
- * Created by rafaellopez on 11/27/17.
  */
 public class NoImplementationResponseResource {
     @Path("/users")

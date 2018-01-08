@@ -12,7 +12,6 @@ import javax.ws.rs.core.Response;
 
 /**
  * Resource with RequestBody inside Operation and another in Method
- * Created by rafaellopez on 11/26/17.
  */
 public class RequestBodyParameterPriorityResource {
     @POST

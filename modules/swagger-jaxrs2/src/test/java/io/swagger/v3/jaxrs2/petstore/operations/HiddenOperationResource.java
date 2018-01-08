@@ -10,7 +10,6 @@ import javax.ws.rs.Path;
 
 /**
  * Resource With a Hidden Operation
- * Created by rafaellopez on 11/26/17.
  */
 public class HiddenOperationResource {
     @Path("/pets")

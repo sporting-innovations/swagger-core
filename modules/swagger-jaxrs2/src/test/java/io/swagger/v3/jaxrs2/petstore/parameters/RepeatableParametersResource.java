@@ -14,9 +14,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
-/**
- * Created by rafaellopez on 11/29/17.
- */
 public class RepeatableParametersResource {
     @Path("/test")
     @POST

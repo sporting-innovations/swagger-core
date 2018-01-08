@@ -13,7 +13,6 @@ import javax.ws.rs.QueryParam;
 
 /**
  * Class with Links
- * Created by rafaellopez on 11/19/17.
  */
 public class LinksResource {
     @Path("/users")

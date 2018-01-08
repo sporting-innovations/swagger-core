@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * Class with Tag Annotations at Class level
- * Created by rafaellopez on 11/26/17.
  */
 @Tag(name = "Second Tag")
 @Tag(name = "Fourth Tag Full", description = "desc class", externalDocs = @ExternalDocumentation(description = "docs desc class"))

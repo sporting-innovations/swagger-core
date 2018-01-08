@@ -9,9 +9,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
-/**
- * Created by rafaellopez on 11/22/17.
- */
 public class RepeatableCallbackResource {
     @Callback(name = "testCallback", operation = @Operation(), callbackUrlExpression = "http://$requests.query.url")
     @Callback(

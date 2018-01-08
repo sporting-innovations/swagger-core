@@ -16,7 +16,6 @@ import javax.ws.rs.Path;
 
 /**
  * Examples Resource Scenario
- * Created by rafaellopez on 11/19/17.
  */
 public class ExamplesResource {
     @Path("/test")

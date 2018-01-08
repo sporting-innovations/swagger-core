@@ -10,7 +10,6 @@ import javax.ws.rs.core.Response;
 
 /**
  * Interface resource
- * Created by rafaellopez on 12/31/17.
  */
 public interface InterfaceResource {
     @GET

@@ -11,7 +11,6 @@ import javax.ws.rs.core.Response;
 
 /**
  * Resource with the response in the Operation Annotation
- * Created by rafaellopez on 11/27/17.
  */
 public class OperationResponseResource {
     @GET

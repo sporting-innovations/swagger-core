@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * OpenAPIDefinition Example
- * Created by rafaellopez on 11/22/17.
  */
 @OpenAPIDefinition(
         info = @Info(

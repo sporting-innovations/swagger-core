@@ -7,10 +7,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
-/**
- * Created by rafaellopez on 11/26/17.
- */
-
 public class TagMethodResource {
     @GET
     @Path("/")

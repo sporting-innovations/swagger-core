@@ -10,7 +10,6 @@ import javax.ws.rs.Path;
 
 /**
  * Resource with a Response at Method Level
- * Created by rafaellopez on 11/27/17.
  */
 public class ImplementationResponseResource {
     @GET
