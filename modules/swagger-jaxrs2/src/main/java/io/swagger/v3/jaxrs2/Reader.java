@@ -510,7 +510,7 @@ public class Reader implements OpenApiReader {
                                       Annotation[] paramAnnotations, Type type) {
 
         io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyAnnotation = getRequestBody(Arrays.asList(paramAnnotations));
-        final Map<String, Object> extensions = OperationParser.getExtensions(getExtension(Arrays.asList(paramAnnotations)));
+        final Map<String, Object> extensions = OperationParser.getExtensions(getExtensions(Arrays.asList(paramAnnotations)));
         if (requestBodyAnnotation != null) {
             Optional<RequestBody> optionalRequestBody = OperationParser.getRequestBody(requestBodyAnnotation, classConsumes, methodConsumes, components);
             if (optionalRequestBody.isPresent()) {
@@ -580,7 +580,7 @@ public class Reader implements OpenApiReader {
         return null;
     }
 
-    private List<Extension> getExtension(List<Annotation> annotations) {
+    private List<Extension> getExtensions(List<Annotation> annotations) {
         if (annotations == null) {
             return null;
         }
@@ -589,13 +589,7 @@ public class Reader implements OpenApiReader {
             if (a instanceof Extension) {
                 extensions.add((Extension) a);
             } else if (a instanceof Extensions) {
-                Extension[] value = ((Extensions) a).value();
-                if (value != null) {
-                    Arrays.asList(value).forEach(extension -> {
-                        extensions.add(extension);
-                    });
-                }
-
+                extensions.addAll(Arrays.asList(((Extensions) a).value()));
             }
         }
         return extensions;

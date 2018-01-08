@@ -3,6 +3,8 @@ package io.swagger.v3.core.util;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.oas.annotations.enums.Explode;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.Extensions;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.examples.Example;
@@ -18,6 +20,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +43,9 @@ public class ParameterProcessor {
         // first handle schema
         List<Annotation> reworkedAnnotations = new ArrayList<>(annotations);
         Annotation paramSchemaOrArrayAnnotation = getParamSchemaAnnotation(annotations);
+
+        List<Extension> extensions = new ArrayList<>();
+
         if (paramSchemaOrArrayAnnotation != null) {
             reworkedAnnotations.add(paramSchemaOrArrayAnnotation);
         }
@@ -129,7 +135,12 @@ public class ParameterProcessor {
                 } catch (Exception e) {
                     LOGGER.error("failed on " + annotation.annotationType().getName(), e);
                 }
+            } else if (annotation instanceof Extension) {
+                extensions.add((Extension) annotation);
+            } else if (annotation instanceof Extensions) {
+                extensions.addAll(Arrays.asList(((Extensions) annotation).value()));
             }
+            parameter.setExtensions(getExtensions(extensions));
         }
         final String defaultValue = helper.getDefaultValue();
 
@@ -152,6 +163,20 @@ public class ParameterProcessor {
             }
         }
         return parameter;
+    }
+
+    public static Map<String, Object> getExtensions(final List<Extension> apiExtensions) {
+        final Map<String, Object> extensions = new HashMap<>();
+        if (apiExtensions != null) {
+            apiExtensions.forEach(extension -> {
+                final Map<String, String> properties = new HashMap<>();
+                Arrays.asList(extension.properties()).forEach(extensionProperty -> {
+                    properties.put(extensionProperty.name(), extensionProperty.value());
+                });
+                extensions.put(extension.name(), properties);
+            });
+        }
+        return extensions;
     }
 
     public static void setParameterExplode(Parameter parameter, io.swagger.v3.oas.annotations.Parameter p) {
