@@ -1,4 +1,4 @@
-package io.swagger.v3.jaxrs2.petstore.definition;
+package io.swagger.v3.jaxrs2.petstore.openapidefintion;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;

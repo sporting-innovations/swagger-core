@@ -1,4 +1,4 @@
-package io.swagger.v3.jaxrs2.petstore.operations;
+package io.swagger.v3.jaxrs2.petstore.operation;
 
 import io.swagger.v3.jaxrs2.resources.model.Pet;
 import io.swagger.v3.jaxrs2.resources.model.User;

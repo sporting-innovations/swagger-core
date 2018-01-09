@@ -1,4 +1,4 @@
-package io.swagger.v3.jaxrs2.petstore.parameters;
+package io.swagger.v3.jaxrs2.petstore.parameter;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

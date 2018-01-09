@@ -1,4 +1,4 @@
-package io.swagger.v3.jaxrs2.petstore.requestbodies;
+package io.swagger.v3.jaxrs2.petstore.requestbody;
 
 import io.swagger.v3.jaxrs2.resources.model.Pet;
 import io.swagger.v3.jaxrs2.resources.model.User;

@@ -1,4 +1,4 @@
-package io.swagger.v3.jaxrs2.petstore.operations;
+package io.swagger.v3.jaxrs2.petstore.operation;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
