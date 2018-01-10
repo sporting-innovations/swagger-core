@@ -62,9 +62,11 @@ public class PetResourceTest extends AbstractAnnotationTest {
     private static final String LINKS_SOURCE = "petstore/links/";
     private static final String EXAMPLES_SOURCE = "petstore/example/";
     private static final String REQUEST_BODIES_SOURCE = "petstore/requestbody/";
-    private static final String SUBRESOURCES_SOURCE = "petstore/subresources/";
+    private static final String SUB_RESOURCES_SOURCE = "petstore/subresources/";
     private static final String YAML_EXTENSION = ".yaml";
-    public static final String PETSTORE_PACKAGE = "io.swagger.v3.jaxrs2.petstore";
+    private static final String PETSTORE_PACKAGE = "io.swagger.v3.jaxrs2.petstore";
+    private static final char DOT = '.';
+    private static final char SLASH = '/';
 
     @Test(description = "Test an empty resource class (Without operations or annotations)")
     public void testEmptyPetResource() {
@@ -105,7 +107,7 @@ public class PetResourceTest extends AbstractAnnotationTest {
 
     @Test(description = "Sub resources tests)")
     public void testSubResource() {
-        compare(SubResource.class, SUBRESOURCES_SOURCE);
+        compare(SubResource.class, SUB_RESOURCES_SOURCE);
     }
 
     @Test(description = "Test RequestBody resource)")
@@ -183,7 +185,7 @@ public class PetResourceTest extends AbstractAnnotationTest {
             throws ClassNotFoundException, IOException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         assert classLoader != null;
-        String path = packageName.replace('.', '/');
+        String path = packageName.replace(DOT, SLASH);
         Enumeration<URL> resources = classLoader.getResources(path);
         List<File> dirs = new ArrayList<>();
         while (resources.hasMoreElements()) {
