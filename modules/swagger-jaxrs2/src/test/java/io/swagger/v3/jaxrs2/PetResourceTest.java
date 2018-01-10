@@ -1,11 +1,12 @@
-package io.swagger.v3.jaxrs2.petstore;
+package io.swagger.v3.jaxrs2;
 
 import io.swagger.v3.jaxrs2.annotations.AbstractAnnotationTest;
+import io.swagger.v3.jaxrs2.petstore.EmptyPetResource;
 import io.swagger.v3.jaxrs2.petstore.callback.MultipleCallbacksTestWithOperationResource;
 import io.swagger.v3.jaxrs2.petstore.callback.RepeatableCallbackResource;
-import io.swagger.v3.jaxrs2.petstore.openapidefintion.OpenAPIDefinitionResource;
 import io.swagger.v3.jaxrs2.petstore.example.ExamplesResource;
 import io.swagger.v3.jaxrs2.petstore.link.LinksResource;
+import io.swagger.v3.jaxrs2.petstore.openapidefintion.OpenAPIDefinitionResource;
 import io.swagger.v3.jaxrs2.petstore.operation.DefaultOperationResource;
 import io.swagger.v3.jaxrs2.petstore.operation.ExternalDocumentationResource;
 import io.swagger.v3.jaxrs2.petstore.operation.HiddenOperationResource;
@@ -32,10 +33,19 @@ import io.swagger.v3.jaxrs2.petstore.tags.TagMethodResource;
 import io.swagger.v3.jaxrs2.petstore.tags.TagOpenAPIDefinitionResource;
 import io.swagger.v3.jaxrs2.petstore.tags.TagOperationResource;
 import io.swagger.v3.jaxrs2.resources.SimpleCallbackResource;
+import io.swagger.v3.oas.models.OpenAPI;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.fail;
 
 /**
@@ -54,6 +64,7 @@ public class PetResourceTest extends AbstractAnnotationTest {
     private static final String REQUEST_BODIES_SOURCE = "petstore/requestbody/";
     private static final String SUBRESOURCES_SOURCE = "petstore/subresources/";
     private static final String YAML_EXTENSION = ".yaml";
+    public static final String PETSTORE_PACKAGE = "io.swagger.v3.jaxrs2.petstore";
 
     @Test(description = "Test an empty resource class (Without operations or annotations)")
     public void testEmptyPetResource() {
@@ -133,8 +144,91 @@ public class PetResourceTest extends AbstractAnnotationTest {
         compare(TagClassResource.class, TAGS_SOURCE);
         compare(TagMethodResource.class, TAGS_SOURCE);
         compare(TagOperationResource.class, TAGS_SOURCE);
+
     }
 
+    @Test(description = "Test a full set of classes")
+    public void testSetOfClasses() {
+        Reader reader = new Reader(new OpenAPI());
+        OpenAPI openAPI = reader.read(getSetOfClassesFromPackage(PETSTORE_PACKAGE));
+        assertNotNull(openAPI);
+    }
+
+    /**
+     * Extract a set of classes from a package name
+     *
+     * @param packageName target to scan the classes
+     * @return Set<Class>
+     */
+    public Set<Class<?>> getSetOfClassesFromPackage(final String packageName) {
+        final Set<Class<?>> classSet = new HashSet<>();
+        try {
+            Class[] classes = getClasses(packageName);
+            for (Class aClass : classes) {
+                classSet.add(aClass);
+            }
+        } catch (final ClassNotFoundException | IOException e) {
+            fail();
+        }
+        return classSet;
+    }
+
+    /**
+     * Scans all classes accessible from the context class loader which belong to the given package and subpackages.
+     *
+     * @param packageName The base package
+     * @return The classes
+     */
+    private static Class[] getClasses(final String packageName)
+            throws ClassNotFoundException, IOException {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        assert classLoader != null;
+        String path = packageName.replace('.', '/');
+        Enumeration<URL> resources = classLoader.getResources(path);
+        List<File> dirs = new ArrayList<>();
+        while (resources.hasMoreElements()) {
+            URL resource = resources.nextElement();
+            dirs.add(new File(resource.getFile()));
+        }
+        ArrayList<Class> classes = new ArrayList<>();
+        for (File directory : dirs) {
+            classes.addAll(findClasses(directory, packageName));
+        }
+        return classes.toArray(new Class[classes.size()]);
+    }
+
+    /**
+     * Recursive method used to find all classes in a given directory and subdirectories.
+     *
+     * @param directory   The base directory
+     * @param packageName The package name for classes found inside the base directory
+     * @return The classes
+     */
+    private static List<Class> findClasses(final File directory, final String packageName) throws ClassNotFoundException {
+        List<Class> classes = new ArrayList<>();
+        if (!directory.exists()) {
+            return classes;
+        }
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    assert !file.getName().contains(".");
+                    classes.addAll(findClasses(file, packageName + "." + file.getName()));
+                } else if (file.getName().endsWith(".class")) {
+                    classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+                }
+            }
+        }
+        return classes;
+    }
+
+    /**
+     * Compare a class that were read and parsed to a yaml aginst a yaml file.
+     *
+     * @param clazz  to read.
+     * @param source where is the yaml.
+     */
     private void compare(final Class clazz, final String source) {
         final String file = source + clazz.getSimpleName() + YAML_EXTENSION;
 
