@@ -4,6 +4,7 @@ import io.swagger.v3.jaxrs2.annotations.AbstractAnnotationTest;
 import io.swagger.v3.jaxrs2.petstore.EmptyPetResource;
 import io.swagger.v3.jaxrs2.petstore.callback.MultipleCallbacksTestWithOperationResource;
 import io.swagger.v3.jaxrs2.petstore.callback.RepeatableCallbackResource;
+import io.swagger.v3.jaxrs2.petstore.callback.SimpleCallbackWithOperationResource;
 import io.swagger.v3.jaxrs2.petstore.example.ExamplesResource;
 import io.swagger.v3.jaxrs2.petstore.link.LinksResource;
 import io.swagger.v3.jaxrs2.petstore.openapidefintion.OpenAPIDefinitionResource;
@@ -32,7 +33,6 @@ import io.swagger.v3.jaxrs2.petstore.tags.TagClassResource;
 import io.swagger.v3.jaxrs2.petstore.tags.TagMethodResource;
 import io.swagger.v3.jaxrs2.petstore.tags.TagOpenAPIDefinitionResource;
 import io.swagger.v3.jaxrs2.petstore.tags.TagOperationResource;
-import io.swagger.v3.jaxrs2.resources.SimpleCallbackResource;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.testng.annotations.Test;
 
@@ -85,7 +85,7 @@ public class PetResourceTest extends AbstractAnnotationTest {
 
     @Test(description = "Test some resources with Callbacks)")
     public void testCallBacksResources() {
-        compare(SimpleCallbackResource.class, CALLBACKS_SOURCE);
+        compare(SimpleCallbackWithOperationResource.class, CALLBACKS_SOURCE);
         compare(MultipleCallbacksTestWithOperationResource.class, CALLBACKS_SOURCE);
         compare(RepeatableCallbackResource.class, CALLBACKS_SOURCE);
     }

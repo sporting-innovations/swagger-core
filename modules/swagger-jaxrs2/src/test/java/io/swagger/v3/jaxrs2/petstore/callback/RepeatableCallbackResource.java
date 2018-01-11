@@ -10,7 +10,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 public class RepeatableCallbackResource {
-    @Callback(name = "testCallback", operation = @Operation(), callbackUrlExpression = "http://$requests.query.url")
+    @Callback(name = "testCallback", operation =
+    @Operation(), callbackUrlExpression = "http://$requests.query.url")
     @Callback(
             name = "testCallback1",
             operation = @Operation(
@@ -26,7 +27,9 @@ public class RepeatableCallbackResource {
                                             type = "integer",
                                             format = "int32")))),
             callbackUrlExpression = "http://www.url.com")
-    @Callback(name = "testCallback2", operation = @Operation(), callbackUrlExpression = "http://$request.query.url")
+    @Callback(name = "testCallback2", operation =
+    @Operation(),
+            callbackUrlExpression = "http://$request.query.url")
     @Operation(
             summary = "Simple get operation",
             operationId = "getWithNoParameters",

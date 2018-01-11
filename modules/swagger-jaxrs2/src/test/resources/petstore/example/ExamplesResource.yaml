@@ -1,6 +1,6 @@
 openapi: 3.0.1
 paths:
-  /test:
+  /example:
     post:
       description: subscribes a client to updates relevant to the requestor's account
       operationId: subscribe
@@ -36,11 +36,11 @@ paths:
               readOnly: true
               example: Schema example
             examples:
-              Default Response:
-                summary: Subscription Response Example
-                description: Default Response
-                value: SubscriptionResponse
-                externalValue: Subscription Response value 1
+              Default Request:
+                summary: Subscription Request Example
+                description: Default Request
+                value: SubscriptionRequest
+                externalValue: Subscription Request Value
         required: true
       responses:
         default:

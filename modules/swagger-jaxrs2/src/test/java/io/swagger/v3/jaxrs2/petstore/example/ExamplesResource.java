@@ -18,7 +18,7 @@ import javax.ws.rs.Path;
  * Examples Resource Scenario
  */
 public class ExamplesResource {
-    @Path("/test")
+    @Path("/example")
     @POST
     @Operation(
             operationId = "subscribe",
@@ -61,8 +61,8 @@ public class ExamplesResource {
                             readOnly = true,
                             example = "Schema example"),
                     examples = {
-                            @ExampleObject(name = "Default Response", value = "SubscriptionResponse",
-                                    summary = "Subscription Response Example", externalValue = "Subscription Response value 1")
+                            @ExampleObject(name = "Default Request", value = "SubscriptionRequest",
+                                    summary = "Subscription Request Example", externalValue = "Subscription Request Value")
                     })) User user) {
         return null;
     }
