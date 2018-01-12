@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response;
 /**
  * Resource with Operations Examples
  */
-public class OperationsResource {
+public class FullyAnnotatedOperationResource {
     @GET
     @Path("/{petId}")
     @Operation(summary = "Find pet by ID",
@@ -32,7 +32,7 @@ public class OperationsResource {
             })
     public Response getPetById(
             @Parameter(description = "ID of pet that needs to be fetched", required = true)
-            @PathParam("petId") Long petId) throws NotFoundException {
+            @PathParam("petId")final Long petId) throws NotFoundException {
         return Response.ok().entity(new Pet()).build();
     }
 }

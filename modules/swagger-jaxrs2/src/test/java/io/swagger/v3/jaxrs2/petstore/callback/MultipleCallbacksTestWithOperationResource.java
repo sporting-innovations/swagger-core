@@ -38,7 +38,7 @@ public class MultipleCallbacksTestWithOperationResource {
                             description = "voila!")
             })
     @GET
-    @Path("/path")
+    @Path("/multiplecallback")
     public String simpleGet() {
         return null;
     }

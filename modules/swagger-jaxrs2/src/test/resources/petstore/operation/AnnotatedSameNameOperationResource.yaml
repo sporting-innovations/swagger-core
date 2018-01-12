@@ -1,8 +1,9 @@
 openapi: 3.0.1
 paths:
-  /notannotatedoperation:
+  /sameOperationName:
     get:
-      operationId: getUser
+      description: Same Operation Name
+      operationId: sameOperationName
       responses:
         default:
           description: default response
@@ -10,9 +11,10 @@ paths:
             '*/*':
               schema:
                 type: string
-  /notannotatedoperationduplicated:
+  /sameOperationNameDuplicated:
     get:
-      operationId: getUser_1
+      description: Same Operation Name Duplicated
+      operationId: sameOperationNameDuplicated
       requestBody:
         content:
           '*/*':

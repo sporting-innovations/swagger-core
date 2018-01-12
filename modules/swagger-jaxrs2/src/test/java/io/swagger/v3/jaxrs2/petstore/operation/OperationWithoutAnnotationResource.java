@@ -6,7 +6,7 @@ import javax.ws.rs.Path;
 /**
  * Resource With a Default Operation without Annotation
  */
-public class DefaultOperationResource {
+public class OperationWithoutAnnotationResource {
     @Path("/users")
     @GET
     public String getUser() {

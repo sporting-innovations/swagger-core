@@ -1,6 +1,6 @@
 openapi: 3.0.1
 paths:
-  /path:
+  /repeatablecallback:
     get:
       summary: Simple get operation
       operationId: getWithNoParameters

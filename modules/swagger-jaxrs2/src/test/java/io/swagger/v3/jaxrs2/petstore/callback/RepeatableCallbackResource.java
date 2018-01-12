@@ -39,7 +39,7 @@ public class RepeatableCallbackResource {
                             description = "voila!")
             })
     @GET
-    @Path("/path")
+    @Path("/repeatablecallback")
     public String simpleGet() {
         return null;
     }

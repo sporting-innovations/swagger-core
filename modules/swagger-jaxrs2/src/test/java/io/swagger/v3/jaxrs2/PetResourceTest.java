@@ -8,11 +8,12 @@ import io.swagger.v3.jaxrs2.petstore.callback.SimpleCallbackWithOperationResourc
 import io.swagger.v3.jaxrs2.petstore.example.ExamplesResource;
 import io.swagger.v3.jaxrs2.petstore.link.LinksResource;
 import io.swagger.v3.jaxrs2.petstore.openapidefintion.OpenAPIDefinitionResource;
-import io.swagger.v3.jaxrs2.petstore.operation.DefaultOperationResource;
+import io.swagger.v3.jaxrs2.petstore.operation.AnnotatedSameNameOperationResource;
 import io.swagger.v3.jaxrs2.petstore.operation.ExternalDocumentationResource;
+import io.swagger.v3.jaxrs2.petstore.operation.FullyAnnotatedOperationResource;
 import io.swagger.v3.jaxrs2.petstore.operation.HiddenOperationResource;
 import io.swagger.v3.jaxrs2.petstore.operation.NotAnnotatedSameNameOperationResource;
-import io.swagger.v3.jaxrs2.petstore.operation.OperationsResource;
+import io.swagger.v3.jaxrs2.petstore.operation.OperationWithoutAnnotationResource;
 import io.swagger.v3.jaxrs2.petstore.operation.ServerOperationResource;
 import io.swagger.v3.jaxrs2.petstore.parameter.ArraySchemaResource;
 import io.swagger.v3.jaxrs2.petstore.parameter.ParametersResource;
@@ -93,8 +94,9 @@ public class PetResourceTest extends AbstractAnnotationTest {
     @Test(description = "Test some resources with different Operations scenarios)")
     public void testOperationsResources() {
         compare(HiddenOperationResource.class, OPERATIONS_SOURCE);
-        compare(DefaultOperationResource.class, OPERATIONS_SOURCE);
-        compare(OperationsResource.class, OPERATIONS_SOURCE);
+        compare(OperationWithoutAnnotationResource.class, OPERATIONS_SOURCE);
+        compare(FullyAnnotatedOperationResource.class, OPERATIONS_SOURCE);
+        compare(AnnotatedSameNameOperationResource.class, OPERATIONS_SOURCE);
         compare(NotAnnotatedSameNameOperationResource.class, OPERATIONS_SOURCE);
         compare(ExternalDocumentationResource.class, OPERATIONS_SOURCE);
         compare(ServerOperationResource.class, OPERATIONS_SOURCE);
