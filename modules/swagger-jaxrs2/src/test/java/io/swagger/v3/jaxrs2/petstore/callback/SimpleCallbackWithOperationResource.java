@@ -37,7 +37,8 @@ public class SimpleCallbackWithOperationResource {
                             description = "voila!")
             })
     @GET
-    @Path("/path")
-    public void simpleGet() {
+    @Path("/callbacks")
+    public String simpleGet() {
+        return null;
     }
 }

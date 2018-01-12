@@ -40,6 +40,7 @@ public class RepeatableCallbackResource {
             })
     @GET
     @Path("/path")
-    public void simpleGet() {
+    public String simpleGet() {
+        return null;
     }
 }

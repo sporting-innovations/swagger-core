@@ -39,6 +39,7 @@ public class MultipleCallbacksTestWithOperationResource {
             })
     @GET
     @Path("/path")
-    public void simpleGet() {
+    public String simpleGet() {
+        return null;
     }
 }
